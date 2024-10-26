@@ -1,0 +1,19 @@
+<div class="who-to-follow-section">
+    <h5 class="fw-bold">Who to follow</h5>
+    <ul class="list-unstyled">
+      <li *ngFor="let user of suggestedUsers" class="mb-3">
+        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+          <img [src]="user.profilePicture" alt="{{ user.userName }}" >
+          <div>
+            <p class="mb-0 fw-bold">{{ user.userName }}</p>
+            <span class="text-muted">{{ user.email }}</span>
+          </div>
+          <button class="btn  btn-primary ms-auto fw-bold">Follow</button>
+        </a>
+      </li>
+      <li>
+        <a href="#" >Show more</a>
+      </li>
+    </ul>
+  </div>
+  

@@ -1,0 +1,47 @@
+<div>
+    <div class="tabs">
+        <button (click)="GetRandomTimeline()" #Foryou >For you</button>
+        <button (click)="GetFollowersNews()" #Following>Following</button>
+    </div>
+
+    <div class="createtweet-container">
+        <div class="tweet-header">
+            <img src="assets/download.jpg" alt="Profile" class="profile-img">
+           
+            <textarea class="tweet-textarea" placeholder="What's happening?" rows="3"
+            [(ngModel)]="tweetToCreate.content"
+            (input)="checkTweetContent()">
+            </textarea>
+          
+        </div>
+        
+        <div *ngIf="tweetToCreate.mediaUrl" >
+            <img [src]="tweetToCreate.mediaUrl" alt="Selected Image" class="uploaded-image" />
+        </div>
+       
+      <div class="tweet-footer">
+            <div class="tweet-icons">
+              
+                <i class="fas fa-download tweet-icon" title="Download Media" (click)="triggerFileInput()"></i> <!-- Media Download Icon -->
+
+                  <!-- Hidden file input -->
+                <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept="image/*">
+  
+            </div>
+            <button class="btn btn-primary" style="border: inherit;" [disabled]="!isTweetValid" (click)="submitTweet()">Tweet</button>
+        </div>
+    </div>
+    
+    <div *ngIf="tweets.length>0; else noTweets">
+      <div *ngFor="let tweet of tweets" class="tweet"> 
+          <app-tweet [tweet]="tweet"/>
+      </div>
+    </div>
+
+    <ng-template #noTweets class="tweet-container" >
+        <p style="text-align: center;">No tweets found</p>
+    </ng-template>
+
+</div>
+
+

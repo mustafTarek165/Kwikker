@@ -1,0 +1,75 @@
+.tweet-container {
+    max-width: 600px;  /* Restrict the width of the tweet to 600px */
+    padding: 10px;
+    background-color: inherit;
+    color: white;
+    margin: 0 auto;  /* Center the tweet if needed */
+    word-wrap: break-word;  /* Ensure long words break and wrap to the next line */
+  }
+  
+  .tweet-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .tweet-content {
+    font-size: 14px;
+    line-height: 1.5;
+    color: white;
+  }
+  
+  .tweet-img {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .tweet-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .action {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+  }
+  
+  .action i {
+    font-size: 16px;
+    color: #888;
+    margin-right: 5px;
+  }
+  
+  .action span {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .action:hover i {
+    color: #1da1f2;
+  }
+  
+  .tweet-actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .tweet-actions button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+ body {
+    height: 100%; /* Ensure full height for body */
+    margin: 0; /* Remove default margin */
+    background-color: black ; /* Force body background to black */
+    color: white; /* Set text color to white for contrast */
+    font-family: 'Your Font Family', sans-serif; /* Optional: Customize font family */
+}
+.sidebar {
+    width: 250px;
+   
+    height: 100%;
+    background-color: #000; 
+  }
+  
+  .sidebar a.nav-link {
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  .sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+  }
+  img {
+    border-radius: 50%;
+    border: transparent solid;
+    width: 40px;
+    height: 40px;
+  }
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%; /* Full width on small screens */
+    }
+    .sidebar a {
+      text-align: center;
+      padding: 10px;
+    }
+  }
+  

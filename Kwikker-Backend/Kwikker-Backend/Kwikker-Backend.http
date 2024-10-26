@@ -1,0 +1,6 @@
+@Kwikker_Backend_HostAddress = http://localhost:5063
+
+GET {{Kwikker_Backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

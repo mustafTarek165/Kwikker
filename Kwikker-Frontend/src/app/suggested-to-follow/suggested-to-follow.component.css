@@ -1,0 +1,23 @@
+.who-to-follow-section {
+    background-color: inherit;
+   
+    padding: 15px; /* Padding inside the section */
+    border: 1px solid rgb(74, 70, 70);
+    border-radius: 15px;
+    max-width: 350px;
+  }
+  
+  .who-to-follow-section h5 {
+    font-weight: bold; /* Bold title for the section */
+  }
+  
+  .who-to-follow-section img {
+    border-radius: 50%; /* Circular image */
+  }
+  .who-to-follow-section button{
+background-color: rgb(241, 237, 237);
+border: 1px  rgb(241, 237, 237) solid;
+border-radius: 30% ;
+color: black;
+width: 25%;
+  }

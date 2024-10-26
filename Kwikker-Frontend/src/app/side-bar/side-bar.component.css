@@ -1,0 +1,13 @@
+button{
+margin:5px 5px;
+width: 100%;
+}
+.cus-mar{
+    margin-left: 10px;
+}
+
+.cus-background{
+    background-color: black;
+    color: white;
+    margin: 30px 20px !important;
+}

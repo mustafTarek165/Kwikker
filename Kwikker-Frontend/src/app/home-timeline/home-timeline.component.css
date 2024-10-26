@@ -1,0 +1,87 @@
+.tabs{
+    display: flex;
+ height: 40px;
+}
+.tabs button{
+    width: 50%;
+    color: rgb(119, 111, 111);
+    background-color: inherit;
+    border: inherit;
+  
+    border-bottom: 1px solid rgb(74, 70, 70);
+}
+.tabs button:hover{
+    background-color: rgb(38, 39, 40);
+    transition: ease-in-out .2s;
+}
+.tabs > :first-child{
+    border-right: 1px solid rgb(74, 70, 70);;
+}
+.createtweet-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: inherit;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.tweet-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid inherit
+}
+.profile-img {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+
+
+
+    margin-bottom: 40px;
+
+    margin-right: 10px;
+}
+.tweet-textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 16px;
+    outline: none;
+    padding: 10px 0;
+    
+    color: white;
+    background-color: inherit;
+}
+.tweet-textarea::placeholder {
+    color: #657786;
+}
+.tweet-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid inherit;
+}
+.tweet-icons {
+    display: flex;
+    align-items: center;
+}
+.tweet-icon {
+    margin-right: 15px;
+    color: #1da1f2;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+button:disabled {
+    background-color: #aab8c2;
+    cursor: not-allowed;
+}
+.uploaded-image {
+    
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+ 
+  }

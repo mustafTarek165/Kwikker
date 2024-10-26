@@ -1,0 +1,30 @@
+.whats-happening-section {
+    background-color:inherit;
+    padding: 15px;
+    max-width: 350px;
+    border: 1px solid rgb(74, 70, 70);
+    border-radius: 15px;
+   
+    color: white;
+  }
+  
+  .whats-happening-section h5 {
+    font-weight: bold;
+  }
+  
+  .whats-happening-section ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .whats-happening-section li {
+    margin-bottom: 15px;
+  }
+  
+
+  
+  .whats-happening-section .text-muted {
+    font-size: 0.875rem;
+  }
+  

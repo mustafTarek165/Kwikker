@@ -1,0 +1,67 @@
+# Ignore Visual Studio temporary files
+.vs/
+
+# Ignore build results
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# Ignore logs
+*.log
+
+# Ignore compiled binary files
+*.dll
+*.exe
+*.pdb
+*.mdb
+
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+**/packages/*
+
+# Ignore Rider-specific files
+.idea/
+*.sln.iml
+
+# Ignore Visual Studio Code settings
+.vscode/
+*.code-workspace
+
+# Ignore ASP.NET temporary files
+aspnet_client/
+*/Properties/launchSettings.json
+
+# Ignore coverage and analysis files
+coverage/
+*.coverage
+*.coverlet
+
+# Ignore database files
+*.db
+*.sql
+*.sqlite
+
+# Ignore macOS-specific files
+.DS_Store
+
+# Ignore Windows thumbnail cache
+Thumbs.db
+
+# Ignore JetBrains Rider files
+.idea/
+
+# Ignore backup files
+*~ 
+*.bak
+
+# Ignore the node_modules folder if using Node.js
+node_modules/
+
+# Ignore TypeScript compiled files
+*.js
+*.js.map
