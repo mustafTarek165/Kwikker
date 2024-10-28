@@ -98,21 +98,21 @@ namespace Service.ServiceModels
         }
 
 
-        public async Task<(IEnumerable<ExpandoObject> tweets, MetaData metaData)>
+        public async Task<(IEnumerable<TweetDTO> tweets, MetaData metaData)>
             GetTweetsByUser(int UserId,TweetParameters tweetParameters,bool trackChanges)
         {
             var tweetsWithMetaData =await _repository.TweetRepository.GetTweetsByUser(UserId,  tweetParameters,trackChanges);
 
             if (!tweetsWithMetaData.Any())
             {
-                return (Enumerable.Empty<ExpandoObject>(), new MetaData());
+                return (Enumerable.Empty<TweetDTO>(), new MetaData());
             }
 
             var TweetDTOs = _mapper.Map<IEnumerable<TweetDTO>>(tweetsWithMetaData);
 
-            var shapedData = _dataShaper.ShapeData(TweetDTOs,tweetParameters.Fields!);
+          
 
-            return (tweets: shapedData, metaData: tweetsWithMetaData.MetaData);
+            return (tweets: TweetDTOs, metaData: tweetsWithMetaData.MetaData);
 
         }
         private async Task AddNewTrends(string tweet,int tweetId)

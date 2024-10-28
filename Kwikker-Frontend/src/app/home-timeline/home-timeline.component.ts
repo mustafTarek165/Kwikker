@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CreatedTweet, TweetForCreation } from '../../Models/Tweet.model';
 import { TweetService } from '../../Services/Tweet.service';
 import { TimelineService } from '../../Services/Timeline.service';
-import { CreatedUser, UserForCreation } from '../../Models/User.model';
+
 @Component({
   selector: 'app-home-timeline',
   standalone: true,
@@ -27,7 +27,7 @@ export class HomeTimelineComponent {
 
   isTweetValid: boolean = false;
   tweets: CreatedTweet[] = [];
-
+  activeButton!:ElementRef<HTMLButtonElement>;
   userId=2;
   // Check the tweet content whenever the input changes
   checkTweetContent(): void {
@@ -39,20 +39,22 @@ export class HomeTimelineComponent {
  @ViewChild('Following') Following!:ElementRef<HTMLButtonElement>;
 
   ngAfterViewInit():void{
-    this.changeTapStatus(this.ForYou,this.Following);
+    this.activeButton=this.ForYou;
+
+    this.GetRandomTimeline();
     console.log(this.ForYou);
   }
   ngOnInit(): void {
 
-   this.GetRandomTimeline();
+   
 
 
   }
  
 
   GetFollowersNews():void{
-    this.changeTapStatus(this.Following,this.ForYou);
-
+    
+    this.changeTapStatus(this.Following);
     this.timelinService.getFollowersNews(this.userId).subscribe((data:CreatedTweet[])=>{
       this.tweets=data;
     },  (error) => {
@@ -62,7 +64,7 @@ export class HomeTimelineComponent {
 
   GetRandomTimeline():void{
 
-   this.changeTapStatus(this.ForYou,this.Following);
+   this.changeTapStatus(this.ForYou);
 
     this.timelinService.getRandomTimeline(this.userId).subscribe((data:CreatedTweet[])=>{
       this.tweets=data;
@@ -85,7 +87,9 @@ export class HomeTimelineComponent {
              mediaUrl: response.mediaUrl,
              content: response.content,
              userId: response.userId,
-             createdAt: response.createdAt
+             createdAt: response.createdAt,
+             profilePicture: response.profilePicture,
+             userName: response.userName
            }    
            this.tweets.unshift(newTweet);          
 
@@ -127,12 +131,20 @@ export class HomeTimelineComponent {
       }
     }
 
-    changeTapStatus(ele1 :ElementRef<HTMLButtonElement>,ele2 :ElementRef<HTMLButtonElement>):void{
-      ele1.nativeElement.style.backgroundColor='rgb(38, 39, 40)';
-      ele1.nativeElement.style.color='white';
-
-      ele2.nativeElement.style.backgroundColor='inherit';
-      ele2.nativeElement.style.color='rgb(119, 111, 111)';
+    changeTapStatus(selectedButton: ElementRef<HTMLButtonElement>): void {
+      if (this.activeButton) {
+        // Reset previous active button
+        this.activeButton.nativeElement.style.backgroundColor = 'inherit';
+        this.activeButton.nativeElement.style.color = 'rgb(119, 111, 111)';
+      }
+      
+    
+      // Set the new active button styles
+      selectedButton.nativeElement.style.backgroundColor = 'rgb(38, 39, 40)';
+      selectedButton.nativeElement.style.color = 'white';
+    
+      // Update the active button reference
+      this.activeButton = selectedButton;
     }
     
     

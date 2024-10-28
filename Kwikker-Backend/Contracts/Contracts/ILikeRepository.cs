@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Repository.Contracts.Contracts
         void CreateLike(int userId, int tweetId);
         void DeleteLike(Like like);
         Task<Like> GetLike(int userId, int tweetId,bool trackChanges);
-         
-       
+
+        Task<PagedList<Tweet>> GetLikedTweetsByUser(int UserId, LikeParameters likeParameters, bool trackChanges);
     }
 }

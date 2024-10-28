@@ -43,13 +43,17 @@ namespace Service.ServiceModels
             await _repository.SaveAsync();
         }
 
-        public async Task<(IEnumerable<BookmarkDTO> bookmarks, MetaData metaData)> GetUserBookmarks(int userId, BookmarkParameters bookmarkParameters, bool trackChanges)
+        public async Task<(IEnumerable<TweetDTO> bookmarks, MetaData metaData)> GetUserBookmarks(int userId, BookmarkParameters bookmarkParameters, bool trackChanges)
         {
             var bookmarksWithMetaData = await _repository.BookmarkRepository.GetBookmarksByUser(userId, bookmarkParameters, trackChanges);
 
-            if (bookmarksWithMetaData.Count() == 0) throw new ForeignKeyNotFoundException(userId, "Bookmarks", "User");
+             
+             if (!bookmarksWithMetaData.Any())
+            {
+                return (Enumerable.Empty<TweetDTO>(), new MetaData());
+            }
 
-            var bookmarksDTOs = _mapper.Map<IEnumerable<BookmarkDTO>>(bookmarksWithMetaData);
+            var bookmarksDTOs = _mapper.Map<IEnumerable<TweetDTO>>(bookmarksWithMetaData);
 
             return (bookmarks: bookmarksDTOs, metaData: bookmarksWithMetaData.MetaData);
         }

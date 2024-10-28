@@ -42,7 +42,7 @@ namespace Service.ServiceModels
         }
 
         //for followers news
-        public async Task<List<ExpandoObject>> GetHomeTimeline(int UserId )
+        public async Task<List<TweetDTO>> GetHomeTimeline(int UserId )
         {
             CacheKey +="follow"+UserId;
             var cachedTimeline=await _redisCache.StringGetAsync(CacheKey);
@@ -54,7 +54,7 @@ namespace Service.ServiceModels
 
                 TweetParameters tweetParameters = new TweetParameters();
 
-                List<ExpandoObject> homeTimeline = new List<ExpandoObject>();
+                List<TweetDTO> homeTimeline = new List<TweetDTO>();
                 foreach (var followee in randomFollowees.followees)
                 {
 
@@ -62,7 +62,7 @@ namespace Service.ServiceModels
                     homeTimeline.AddRange(randomTweets.tweets);
 
                 }
-                List<ExpandoObject> randomeHomeTimeline = new List<ExpandoObject>();
+                List<TweetDTO> randomeHomeTimeline = new List<TweetDTO>();
                 Random rnd = new Random();
                 randomeHomeTimeline = homeTimeline.OrderBy(x => rnd.Next()).ToList();
 
@@ -73,14 +73,14 @@ namespace Service.ServiceModels
 
                 return randomeHomeTimeline;
             }
-            var retreived = JsonSerializer.Deserialize<List<ExpandoObject>>(cachedTimeline!);
+            var retreived = JsonSerializer.Deserialize<List<TweetDTO>>(cachedTimeline!);
 
             return retreived!;
 
         }
 
         //for profiles
-        public async Task<IEnumerable<ExpandoObject>> GetUserTimeline(int UserId)
+        public async Task<IEnumerable<TweetDTO>> GetUserTimeline(int UserId)
         {
 
             CacheKey += "profile" + UserId;
@@ -90,16 +90,22 @@ namespace Service.ServiceModels
                 TweetParameters tweetParameters = new TweetParameters();
 
                 var tweets = await _tweetService.GetTweetsByUser(UserId, tweetParameters, trackChanges: false);
+
+
+                var serializedTimeline = JsonSerializer.Serialize(tweets.tweets);
+
+                await _redisCache.StringSetAsync(CacheKey, serializedTimeline, CacheExpiration);
+
                 return tweets.tweets;
             }
 
-            var retreived = JsonSerializer.Deserialize<List<ExpandoObject>>(cachedTimeline!);
+            var retreived = JsonSerializer.Deserialize<IEnumerable<TweetDTO>>(cachedTimeline!);
 
             return retreived!;
         }
 
         // random not related to followers or user
-        public async Task<List<ExpandoObject>> GetRandomTimeline(int UserId)
+        public async Task<List<TweetDTO>> GetRandomTimeline(int UserId)
         {
 
             CacheKey += "random" + UserId;
@@ -111,7 +117,7 @@ namespace Service.ServiceModels
 
                 availableUsers = await _followService.GetRandomUsers(UserId);
 
-                List<ExpandoObject> randomTimeline = new List<ExpandoObject>();
+                List<TweetDTO> randomTimeline = new List<TweetDTO>();
                 foreach (var userId in availableUsers)
                 {
                     TweetParameters tweetParameters = new TweetParameters();
@@ -119,9 +125,19 @@ namespace Service.ServiceModels
                     randomTimeline.AddRange(randomTweets.tweets);
 
                 }
+
+                List<TweetDTO> random = new List<TweetDTO>();
+                Random rnd = new Random();
+                random = randomTimeline.OrderBy(x => rnd.Next()).ToList();
+
+                var serializedTimeline = JsonSerializer.Serialize(random);
+
+                await _redisCache.StringSetAsync(CacheKey, serializedTimeline, CacheExpiration);
+
                 return randomTimeline;
             }
-            var retreived = JsonSerializer.Deserialize<List<ExpandoObject>>(cachedTimeline!);
+           
+            var retreived = JsonSerializer.Deserialize<List<TweetDTO>>(cachedTimeline!);
 
             return retreived!;
 

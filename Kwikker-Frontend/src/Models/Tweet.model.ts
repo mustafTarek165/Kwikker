@@ -9,5 +9,7 @@ export interface CreatedTweet
     mediaUrl:string,
     content:string,
     userId:number,
-    createdAt:Date
+    createdAt:Date,
+    profilePicture:string |ArrayBuffer|null,
+    userName:string
 }

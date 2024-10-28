@@ -1,0 +1,93 @@
+.profile-container {
+    width: 600px;
+ 
+    overflow: hidden;
+  }
+  
+  /* Cover Photo */
+  .cover-photo img {
+    width: 100%;
+    height: 200px;
+    border-radius: 0 ;
+      
+  }
+  
+  /* Profile Picture and Edit Button */
+  .profile-info {
+    position: relative;
+    padding: 20px;
+    padding-top: 60px;
+    text-align: center;
+  }
+  
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute;
+    top: -60px;
+    left: calc(12% - 60px); /* Centers the profile picture */
+    border: 2px solid white;
+  }
+  
+  .profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ 
+  .edit-profile {
+    background-color: transparent;
+    padding: 8px 16px;
+    border: 1px solid rgb(74, 70, 70);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: background-color 0.3s;
+  }
+  .edit-profile:hover{
+    background-color: rgb(38, 39, 40);
+ 
+}
+  
+  
+  /* Profile Details */
+  .profile-details {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .profile-details h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #657786;
+  }
+  
+  /* Profile Content (Posts, Tweets) */
+  .profile-content {
+    padding: 20px;
+    border-top: 1px solid rgb(74, 70, 70);
+  }
+  .cus-button{
+    background-color: transparent;border: transparent;
+    width: calc(100%/3);
+  }
+  .cus-button:hover{
+    background-color: rgb(38, 39, 40);
+ 
+  }
+  .cus-bar{
+    display: flex; border-bottom: 1px solid rgb(74, 70, 70);
+  }
+  .btn-enabled{
+    background-color: (38, 39, 40);
+    color: white;
+  }

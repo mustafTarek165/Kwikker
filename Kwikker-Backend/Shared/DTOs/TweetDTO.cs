@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public record TweetDTO(int id,string content,string mediaUrl ,int userId,DateTime createdAt);
+    public record TweetDTO(int id,string content,string? mediaUrl ,int userId,DateTime createdAt, string? profilePicture, string userName);
 }

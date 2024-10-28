@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { CreatedTweet } from "../Models/Tweet.model";
-import { CreatedUser } from "../Models/User.model";
 
 @Injectable({
     providedIn: 'root' // Add this to make the service a singleton across the app
@@ -10,7 +9,7 @@ import { CreatedUser } from "../Models/User.model";
 export class TimelineService
 {
     private TimelinesUrl='https://localhost:7246/api/Timelines';
-    private FollowingsUrl='https://localhost:7246/api/Followings';
+   
     constructor(private http:HttpClient)
     {
                  
@@ -29,10 +28,10 @@ export class TimelineService
     getRandomTimeline(userId:number):Observable<CreatedTweet[]>{
     return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/random/${userId}`);
   }
-
-    getSuggestedUsersToFollow(userId:number): Observable<CreatedUser[]>{
-        return this.http.get<CreatedUser[]>(`${this.FollowingsUrl}/random/${userId}`);
-    }
+   getUserLikedTweets(userId:number): Observable<CreatedTweet[]>{
+    return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`);
+   }
+   
     
 
 

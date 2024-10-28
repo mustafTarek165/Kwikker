@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Shared.RequestFeatures
 {
-    public class BookmarkParameters:RequestParameters
+    public class LikeParameters:RequestParameters
     {
-        public BookmarkParameters() => OrderBy="TweetId";
+        public LikeParameters() => OrderBy = "TweetId";
     }
 }

@@ -6,8 +6,8 @@ import { TrendsComponent } from "./trends/trends.component";
 import { SuggestedToFollowComponent } from "./suggested-to-follow/suggested-to-follow.component";
 import { TweetComponent } from "./tweet/tweet.component";
 import { HomeTimelineComponent } from "./home-timeline/home-timeline.component";
-import { TimelineService } from '../Services/Timeline.service';
 import { CreatedUser } from '../Models/User.model';
+import { FollowService } from '../Services/Follow.service';
 
 @Component({
   selector: 'app-root',
@@ -21,14 +21,14 @@ export class AppComponent {
   userId=2;
   users:CreatedUser[]=[];
 
-  constructor (private timelineService :TimelineService)
+  constructor (private followService:FollowService)
   {
      console.log("Hello from app component");
   }
 
   ngOnInit():void{
     console.log("test from app");
-    this.timelineService.getSuggestedUsersToFollow(this.userId).subscribe((data:CreatedUser[])=>{
+    this.followService.getSuggestedUsersToFollow(this.userId).subscribe((data:CreatedUser[])=>{
       this.users=data;
       console.log(data);
     },(error)=>{

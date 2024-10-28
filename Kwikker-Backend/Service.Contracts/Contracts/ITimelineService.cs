@@ -1,4 +1,5 @@
-﻿using Shared.RequestFeatures;
+﻿using Shared.DTOs;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,11 +12,11 @@ namespace Service.Contracts.Contracts
     public interface ITimelineService
     {
         //for prfiles
-        Task<List<ExpandoObject>> GetHomeTimeline(int UserId);
+        Task<List<TweetDTO>> GetHomeTimeline(int UserId);
         //for followers news
-        Task<IEnumerable<ExpandoObject>>  GetUserTimeline(int UserId);
+        Task<IEnumerable<TweetDTO>>  GetUserTimeline(int UserId);
 
         //for random not related to followers or user
-        Task<List<ExpandoObject>> GetRandomTimeline(int UserId);
+        Task<List<TweetDTO>> GetRandomTimeline(int UserId);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetTopologySuite.Operation.Buffer;
 using Service.Contracts;
 using Shared.DTOs;
 using Shared.RequestFeatures;
@@ -18,14 +19,7 @@ namespace Kwikker_Backend.Controllers
         public TweetsController(IServiceManager service) => _service = service;
         //Tweets Creation, Retreival and Removal
 
-        [HttpGet("{id:int}",Name ="TweetById")]
-        public async Task<IActionResult> GetTweet(int id)
-        {
-            var tweet =await _service.TweetService.GetTweet(id, trackChanges: false);
-
-            return Ok(tweet);
-
-        }
+       
         [HttpGet("User/{UserId:int}")]
         public async Task<IActionResult> GetTweetsByUser(int UserId, [FromQuery] TweetParameters tweetParameters)
         {
@@ -68,6 +62,7 @@ namespace Kwikker_Backend.Controllers
             int likes=await _service.LikeService.GetTweetLikesNumber(tweetId,trackChanges:false);
             return Ok(likes);
         }
+        
 
         [HttpPost("like/{userId:int}/{tweetId:int}")]
         public async Task<IActionResult> AddLike(int userId,int tweetId)

@@ -41,6 +41,10 @@ namespace Kwikker_Backend.Controllers
 
             return Ok(pagedBookmarks.bookmarks);
         }
+
+
+
+
     }
 
 

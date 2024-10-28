@@ -2,14 +2,15 @@
     <div class="tweet-container">
       <div class="tweet-header">
         <a href="#">
-          <img src="{{tweet?.mediaUrl}}" alt="User Name" class="avatar">
-          <strong style="margin-left: 10px">Username</strong>
+        
+          <img src="{{tweet?.profilePicture}}" alt="User Name" class="avatar">
+          <strong style="margin-left: 10px">{{tweet?.userName}}</strong>
         </a>
       </div>
       <div class="tweet-content">
         {{tweet?.content}}
       </div>
-      <div class="tweet-img"*ngIf="tweet?.mediaUrl" >
+      <div class="tweet-img" *ngIf="tweet?.mediaUrl" >
         <img src="{{tweet?.mediaUrl}}" alt="User Name" style="width: 200px; height: 200px;">
       </div>
       <div class="tweet-actions">

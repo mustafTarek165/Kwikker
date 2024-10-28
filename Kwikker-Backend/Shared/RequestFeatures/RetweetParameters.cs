@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Shared.RequestFeatures
 {
-    public class BookmarkParameters:RequestParameters
+   public class RetweetParameters:RequestParameters
     {
-        public BookmarkParameters() => OrderBy="TweetId";
+        public RetweetParameters() => OrderBy = "TweetId";
     }
 }

@@ -7,8 +7,10 @@ using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Repository.RepositoryModels
 {
@@ -68,13 +70,26 @@ namespace Repository.RepositoryModels
 
         public async Task<PagedList<Tweet>> GetTweetsByUser(int UserId,TweetParameters tweetParameters, bool trackChanges)
         {
-            var tweets =
-                 FindByCondition(x => x.UserID.Equals(UserId), trackChanges).Sort<Tweet>(tweetParameters.OrderBy!);
+            var tweetsQuery = FindByCondition(tweet => tweet.UserID == UserId, trackChanges)
+        .Sort<Tweet>(tweetParameters.OrderBy!)
+        .Join(
+            RepositoryContext.Set<User>(),        // Join with Users table
+            tweet => tweet.UserID,                // Foreign key in Tweet
+            user => user.ID,                      // Primary key in User
+            (tweet, user) => new Tweet                          // Create a new Tweet instance
+            {
+                ID = tweet.ID,
+                Content = tweet.Content,
+                MediaURL = tweet.MediaURL,
+                UserID = tweet.UserID,
+                CreatedAt = tweet.CreatedAt,
+                User = user                      // Include User if necessary
+            }
+        );
 
-           
-                
+
             return await PagedList<Tweet>
-                   .ToPagedListAsync(tweets, tweetParameters.PageNumber,
+                   .ToPagedListAsync(tweetsQuery, tweetParameters.PageNumber,
                    tweetParameters.PageSize);
         }
       

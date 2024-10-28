@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Shared.DTOs;
 using Entities.ExceptionModels;
 using Microsoft.AspNetCore.SignalR;
+using Shared.RequestFeatures;
 namespace Service.ServiceModels
 {
     internal sealed class LikeService : ILikeService
@@ -66,5 +67,21 @@ namespace Service.ServiceModels
             
             return likes;
         }
+
+        public async Task<(IEnumerable<TweetDTO> likedTweets, MetaData metaData)> GetUserLikedTweets(int userId, LikeParameters likeParameters, bool trackChanges)
+        {
+            var likedTweetsWithMetaData = await _repository.LikeRepository.GetLikedTweetsByUser(userId, likeParameters, trackChanges);
+
+
+            if (!likedTweetsWithMetaData.Any())
+            {
+                return (Enumerable.Empty<TweetDTO>(), new MetaData());
+            }
+
+            var likedTweetsDTOs = _mapper.Map<IEnumerable<TweetDTO>>(likedTweetsWithMetaData);
+
+            return (likedTweets: likedTweetsDTOs, metaData: likedTweetsWithMetaData.MetaData);
+        }
+
     }
 }

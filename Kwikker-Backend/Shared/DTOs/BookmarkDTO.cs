@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public record BookmarkDTO(int UserId,int TweetId, DateTime BookmarkedAt);
+    public record BookmarkDTO(int userId,int tweetId, DateTime bookmarkedAt);
 }

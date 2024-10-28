@@ -11,7 +11,7 @@ namespace Service.Contracts.Contracts
 {
     public interface ITweetService
     {
-        Task<(IEnumerable<ExpandoObject> tweets, MetaData metaData)> GetTweetsByUser(int UserId,TweetParameters tweetParameters, bool trackChanges);
+        Task<(IEnumerable<TweetDTO> tweets, MetaData metaData)> GetTweetsByUser(int UserId,TweetParameters tweetParameters, bool trackChanges);
         
          Task<TweetDTO> GetTweet(int id, bool trackChanges);
         Task<TweetDTO> CreateTweet(int UserId,TweetForCreationDTO tweet, bool trackChanges);

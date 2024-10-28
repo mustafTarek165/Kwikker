@@ -39,10 +39,20 @@ namespace Repository.RepositoryModels
             return bookmark!;
         }
 
-        public async Task<PagedList<Bookmark>> GetBookmarksByUser(int UserId,BookmarkParameters bookmarkParameters, bool trackChanges)
+        public async Task<PagedList<Tweet>> GetBookmarksByUser(int UserId,BookmarkParameters bookmarkParameters, bool trackChanges)
         {
-            var bookmarks= FindByCondition(x => x.UserId.Equals(UserId), trackChanges).Sort<Bookmark>(bookmarkParameters.OrderBy!);
-            return await PagedList<Bookmark>
+            // Build the query with a join and filtering logic
+            var bookmarks = FindByCondition(b => b.UserId == UserId, trackChanges)
+                .Sort<Bookmark>(bookmarkParameters.OrderBy!)
+                .Join(
+                    RepositoryContext.Set<Tweet>(), // Join with Tweets table
+                    b => b.TweetId,                 // Foreign key in Bookmark
+                    t => t.ID,                      // Primary key in Tweet
+                    (b, t) => t                     // Select entire Tweet entity
+                );
+
+
+            return await PagedList<Tweet>
                    .ToPagedListAsync(bookmarks, bookmarkParameters.PageNumber,
                    bookmarkParameters.PageSize);
         }

@@ -12,7 +12,7 @@ namespace Entities.Models
         public int TweetId { get; set; }
         public DateTime BookmarkedAt { get; set; }
 
-        public User? User { get; set; }
-        public Tweet? Tweet { get; set; }
+        public User User { get; set; } = null!;
+        public Tweet Tweet { get; set; } = null!;
     }
 }

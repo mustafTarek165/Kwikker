@@ -43,6 +43,16 @@ namespace Kwikker_Backend.Controllers
             var randomTimeline = await _service.TimelineService.GetRandomTimeline(UserId);
             return Ok(randomTimeline);
         }
+        [HttpGet("LikedTweets/{UserId:int}")]
+        public async Task<IActionResult> GetLikedTweetsByUser(int UserId, [FromQuery] LikeParameters likeParameters)
+        {
+            var pagedLikedTweets = await _service.LikeService.GetUserLikedTweets(UserId, likeParameters, trackChanges: false);
+
+            Response.Headers.Add("X-Pagination",
+            JsonSerializer.Serialize(pagedLikedTweets.metaData));
+
+            return Ok(pagedLikedTweets.likedTweets);
+        }
 
     }
 }
