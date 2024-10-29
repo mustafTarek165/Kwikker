@@ -44,12 +44,7 @@ export class HomeTimelineComponent {
     this.GetRandomTimeline();
     console.log(this.ForYou);
   }
-  ngOnInit(): void {
 
-   
-
-
-  }
  
 
   GetFollowersNews():void{
@@ -89,7 +84,10 @@ export class HomeTimelineComponent {
              userId: response.userId,
              createdAt: response.createdAt,
              profilePicture: response.profilePicture,
-             userName: response.userName
+             userName: response.userName,
+             likesNumber:response.likesNumber,
+             retweetsNumber:response.retweetsNumber,
+             bookmarksNumber:response.bookmarksNumber
            }    
            this.tweets.unshift(newTweet);          
 

@@ -37,8 +37,7 @@ namespace Kwikker_Backend.Controllers
             
             var createdTweet = await _service.TweetService.CreateTweet(UserId,tweet,trackChanges:true);
             
-            return CreatedAtRoute("TweetById", new { id = createdTweet.id },
-            createdTweet);
+            return Ok(createdTweet);
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTweet(int id)

@@ -42,3 +42,64 @@
     }
   }
   
+  .follow-section {
+    background-color: inherit;
+   
+    padding: 15px; /* Padding inside the section */
+    border: 1px solid rgb(74, 70, 70);
+    border-radius: 15px;
+    max-width: 350px;
+  }
+  
+  .follow-section h5 {
+    font-weight: bold; /* Bold title for the section */
+  }
+  
+  .follow-section img {
+    border-radius: 50%; /* Circular image */
+  }
+  
+  .follow-section button:hover{
+        
+          color: white;
+    background-color: black;
+    border: 1px solid rgb(74, 70, 70);
+  }
+
+  .btn-follow{
+    background-color: rgb(241, 237, 237);
+    border: 1px  rgb(241, 237, 237) solid;
+    border-radius: 30% ;
+    color: black;
+     width: 100px;
+     text-align: center;
+  }
+  .btn-unfollow{
+
+    color: white;
+    background-color:black;
+    border: 1px solid rgb(74, 70, 70);
+    border-radius: 30% ;
+     width: 100px;
+     text-align: center;
+  }
+
+  .tabs{
+    display: flex;
+ height: 40px;
+}
+.tabs button{
+    width: 50%;
+    color: rgb(119, 111, 111);
+    background-color: inherit;
+    border: inherit;
+  
+    border-bottom: 1px solid rgb(74, 70, 70);
+}
+.tabs button:hover{
+    background-color: rgb(38, 39, 40);
+    transition: ease-in-out .2s;
+}
+.tabs > :first-child{
+    border-right: 1px solid rgb(74, 70, 70);;
+}

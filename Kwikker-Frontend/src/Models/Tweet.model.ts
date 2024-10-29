@@ -6,10 +6,13 @@ export interface TweetForCreation
 export interface CreatedTweet
 {
     id:number,
-    mediaUrl:string,
+    mediaUrl:string|ArrayBuffer|null,
     content:string,
     userId:number,
     createdAt:Date,
     profilePicture:string |ArrayBuffer|null,
-    userName:string
+    userName:string,
+    likesNumber:number,
+    retweetsNumber:number,
+    bookmarksNumber:number
 }

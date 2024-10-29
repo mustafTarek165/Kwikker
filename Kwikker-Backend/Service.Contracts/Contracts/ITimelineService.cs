@@ -14,7 +14,7 @@ namespace Service.Contracts.Contracts
         //for prfiles
         Task<List<TweetDTO>> GetHomeTimeline(int UserId);
         //for followers news
-        Task<IEnumerable<TweetDTO>>  GetUserTimeline(int UserId);
+        Task<(IEnumerable<TweetDTO> twts, MetaData data)> GetUserTimeline(int UserId);
 
         //for random not related to followers or user
         Task<List<TweetDTO>> GetRandomTimeline(int UserId);

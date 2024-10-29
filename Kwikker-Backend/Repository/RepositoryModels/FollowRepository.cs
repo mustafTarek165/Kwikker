@@ -38,25 +38,40 @@ namespace Repository.RepositoryModels
             return follow!;
         }
 
-        public async Task<PagedList<Follow>> GetUserFollowees(int followerId, FollowingParameters followingParameters, bool trackChanges)
+        public async Task<PagedList<User>> GetUserFollowees(int followerId, FollowingParameters followingParameters, bool trackChanges)
         {
             var followees =
-               FindByCondition(x => x.FollowerID == followerId, trackChanges).Sort<Follow>(followingParameters.OrderBy!);
+               FindByCondition(x => x.FollowerID == followerId, trackChanges)
+               .Sort<Follow>(followingParameters.OrderBy!)
+               .Join(
+                    RepositoryContext.Set<User>(), // Join with Users table
+                    f => f.FolloweeID,                 // Foreign key in Follow
+                    u => u.ID,                      // Primary key in User
+                    (f, u) => u                  // Select entire User entity
+                );
 
-           
 
-            return await PagedList<Follow>
+
+
+            return await PagedList<User>
                    .ToPagedListAsync(followees, followingParameters.PageNumber,
                    followingParameters.PageSize);
         }
 
        
 
-        public async Task<PagedList<Follow>> GetUserFollowers(int followeeId, FollowingParameters followingParameters, bool trackChanges)
+        public async Task<PagedList<User>> GetUserFollowers(int followeeId, FollowingParameters followingParameters, bool trackChanges)
         {
-           var followers= FindByCondition(x => x.FolloweeID == followeeId, trackChanges).Sort<Follow>(followingParameters.OrderBy!);
+           var followers= FindByCondition(x => x.FolloweeID == followeeId, trackChanges)
+                .Sort<Follow>(followingParameters.OrderBy!)
+                .Join(
+                    RepositoryContext.Set<User>(), // Join with Users table
+                    f => f.FollowerID,                 // Foreign key in Follow
+                    u => u.ID,                      // Primary key in User
+                    (f, u) => u                  // Select entire User entity
+                );
 
-            return await PagedList<Follow>
+            return await PagedList<User>
                    .ToPagedListAsync(followers, followingParameters.PageNumber,
                    followingParameters.PageSize);
         }

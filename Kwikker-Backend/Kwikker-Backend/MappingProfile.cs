@@ -5,28 +5,23 @@ using Shared.DTOs;
 
 namespace Kwikker_Backend
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfile() {
-            //Src=>Dest
+        public MappingProfile()
+        {
+            // Source to Destination mappings
+            CreateMap<User, GeneralUserDTO>();
             CreateMap<User, UserDTO>();
-            
-
             CreateMap<TweetForCreationDTO, Tweet>();
 
+            // Mapping from Tweet to TweetDTO
             CreateMap<Tweet, TweetDTO>()
-    .ForCtorParam("profilePicture", opt => opt.MapFrom(src => src.User.ProfilePicture)) // Maps the User's ProfilePicture to TweetDTO's profilePicture
-    .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.Username));             // Maps the User's Username to TweetDTO's userName
+                .ForCtorParam("profilePicture", opt => opt.MapFrom(src => src.User.ProfilePicture )) // Default to empty string if null
+                .ForCtorParam("userName", opt => opt.MapFrom(src => src.User.Username)); // Maps User's Username to TweetDTO's userName
 
-            CreateMap<TweetForUpdateDTO, Tweet>();  
-
-            CreateMap<Follow, FollowDTO>();
-            CreateMap<Bookmark, BookmarkDTO>();
-
-             CreateMap<Trend,TrendDTO>();    
-
+            CreateMap<TweetForUpdateDTO, Tweet>();
+            CreateMap<Trend, TrendDTO>();
             CreateMap<Notification, NotificationDTO>();
-
             CreateMap<UserDTO, GeneralUserDTO>();
         }
     }

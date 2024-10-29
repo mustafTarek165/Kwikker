@@ -14,6 +14,10 @@ namespace Entities.Models
         public string? Content { get; set; }
         public string? MediaURL { get; set; }
         public DateTime CreatedAt { get; set; }
+        //for counting
+        public int LikesNumber { get; set; }
+        public int RetweetsNumber { get; set; }
+        public int BookmarksNumber {  get; set; } 
 
         // Navigation Properties
         public User User { get; set; } = null!; //no tweet without user

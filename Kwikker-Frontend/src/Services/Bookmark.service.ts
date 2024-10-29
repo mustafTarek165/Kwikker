@@ -1,22 +1,40 @@
-import { HttpClient } from "@angular/common/http";
-import { Inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { CreatedBookmark } from "../Models/Bookmark.model";
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CreatedTweet } from '../Models/Tweet.model';
+
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root'
 })
-export class BookmarkService{
+export class BookmarkService {
 
-    private BookmarksUrl='https://localhost:7246/api/Bookmarks';
+    private BookmarksUrl = 'https://localhost:7246/api/Bookmarks';
 
-    constructor(private http:HttpClient){
+    constructor(private http: HttpClient) { }
 
+    getBookmarks(userId: number): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
+        return this.http.get<CreatedTweet[]>(`${this.BookmarksUrl}/${userId}`, {
+            observe: 'response'
+        }).pipe(
+            map((response: HttpResponse<CreatedTweet[]>) => {
+                // Extract metadata from X-Pagination header
+                const paginationHeader = response.headers.get('X-Pagination');
+                let totalCount = 0;
+
+
+                if (paginationHeader) {
+                    const metaData = JSON.parse(paginationHeader);
+                    console.log(metaData);
+                    totalCount = metaData.TotalCount || 0;
+                }
+
+                return {
+                    tweets: response.body || [],
+                    totalCount
+                };
+            })
+        );
     }
-
-    getBookmarks(userId:number):Observable<CreatedBookmark[]>{
-        return this.http.get<CreatedBookmark[]>(`${this.BookmarksUrl}/${userId}`);
-    }
-
-
 }

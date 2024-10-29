@@ -24,6 +24,10 @@ namespace Repository.RepositoryModels
                 UserId = userId,
                 RetweetedAt = DateTime.Now
             };
+
+            var tweet = RepositoryContext.Set<Tweet>().FirstOrDefault(x => x.ID.Equals(tweetId));
+            if (tweet != null) tweet.RetweetsNumber++;
+
             Create(retweet);
 
         }

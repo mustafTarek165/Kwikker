@@ -17,7 +17,7 @@ namespace Repository.RepositoryModels
         {
         }
 
-        public void CreateLike(int userId, int tweetId)
+        public  void CreateLike(int userId, int tweetId)
         {
             Like like = new Like()
             {
@@ -25,6 +25,9 @@ namespace Repository.RepositoryModels
                 UserId = userId,
                 LikedAt=DateTime.Now
             };
+            var tweet=RepositoryContext.Set<Tweet>().FirstOrDefault(x=>x.ID.Equals(tweetId));
+            if (tweet != null) tweet.LikesNumber++;
+
             Create(like);
             
         }

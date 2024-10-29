@@ -15,7 +15,7 @@ export class TweetComponent {
    
  @Input() tweet:CreatedTweet|undefined
 
-  constructor(private tweetService: TweetService) { console.log("hello from tweet component")}
+  constructor(private tweetService: TweetService) { }
 
 
 }

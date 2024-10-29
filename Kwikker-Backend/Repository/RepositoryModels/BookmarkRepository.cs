@@ -26,6 +26,8 @@ namespace Repository.RepositoryModels
                 ,
                 BookmarkedAt = DateTime.UtcNow
             };
+            var tweet = RepositoryContext.Set<Tweet>().FirstOrDefault(x => x.ID.Equals(tweetId));
+            if (tweet != null) tweet.BookmarksNumber++;
             Create(bookmark);
             
         }

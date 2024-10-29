@@ -52,30 +52,30 @@ namespace Service.ServiceModels
            await _repository.SaveAsync();
         }
 
-        public async Task<(IEnumerable<FollowDTO> followees, MetaData metaData)> GetUserFollowees(int followerID, FollowingParameters followingParameters, bool trackChanges)
+        public async Task<(IEnumerable<GeneralUserDTO> followees, MetaData metaData)> GetUserFollowees(int followerID, FollowingParameters followingParameters, bool trackChanges)
         {
             var followeesWithMetaData = await _repository.FollowRepository.GetUserFollowees(followerID, followingParameters, trackChanges);
 
             if (!followeesWithMetaData.Any())
             {
-                return (Enumerable.Empty<FollowDTO>(), new MetaData());
+                return (Enumerable.Empty<GeneralUserDTO>(), new MetaData());
             }
 
-            var followeesDTOs = _mapper.Map<IEnumerable<FollowDTO>>(followeesWithMetaData);
+            var followeesDTOs = _mapper.Map<IEnumerable<GeneralUserDTO>>(followeesWithMetaData);
 
             return (followees: followeesDTOs, metaData: followeesWithMetaData.MetaData);
         }
 
-        public async Task<(IEnumerable<FollowDTO> followers, MetaData metaData)> GetUserFollowers(int followeeID, FollowingParameters followingParameters, bool trackChanges)
+        public async Task<(IEnumerable<GeneralUserDTO> followers, MetaData metaData)> GetUserFollowers(int followeeID, FollowingParameters followingParameters, bool trackChanges)
         {
             var followersWithMetaData=await _repository.FollowRepository.GetUserFollowers(followeeID, followingParameters, trackChanges);
 
             if (!followersWithMetaData.Any())
             {
-                return (Enumerable.Empty<FollowDTO>(), new MetaData());
+                return (Enumerable.Empty<GeneralUserDTO>(), new MetaData());
             }
 
-            var followersDTOs=_mapper.Map<IEnumerable<FollowDTO>>(followersWithMetaData);
+            var followersDTOs=_mapper.Map<IEnumerable<GeneralUserDTO>>(followersWithMetaData);
            
             return (followers:followersDTOs,metaData:followersWithMetaData.MetaData);
         }
@@ -98,7 +98,7 @@ namespace Service.ServiceModels
         public async Task<IEnumerable<int>>GetRandomUsers(int UserId)
         {
             FollowingParameters followingParameters = new FollowingParameters();
-            var userFollowees = GetUserFollowees(UserId, followingParameters, trackChanges: false).Result.followees.Select(x => x.FolloweeID).ToHashSet();
+            var userFollowees = GetUserFollowees(UserId, followingParameters, trackChanges: false).Result.followees.Select(x=>x.id).ToHashSet();
             int userCounts = await _userService.GetUserCount();
 
             // List to store the selected available numbers

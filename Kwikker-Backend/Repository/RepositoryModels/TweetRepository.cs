@@ -83,6 +83,9 @@ namespace Repository.RepositoryModels
                 MediaURL = tweet.MediaURL,
                 UserID = tweet.UserID,
                 CreatedAt = tweet.CreatedAt,
+                LikesNumber=tweet.LikesNumber,
+                RetweetsNumber=tweet.RetweetsNumber,
+                BookmarksNumber=tweet.BookmarksNumber,
                 User = user                      // Include User if necessary
             }
         );

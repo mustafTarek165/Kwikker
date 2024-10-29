@@ -14,17 +14,15 @@
         <img src="{{tweet?.mediaUrl}}" alt="User Name" style="width: 200px; height: 200px;">
       </div>
       <div class="tweet-actions">
+        
         <div class="action">
-          <i class="far fa-comment"></i> <span >12</span>
+          <i class="fas fa-retweet"></i> <span>{{tweet?.retweetsNumber}}</span>
         </div>
         <div class="action">
-          <i class="fas fa-retweet"></i> <span>8</span>
+          <i class="far fa-heart"></i> <span>{{tweet?.likesNumber}}</span>
         </div>
         <div class="action">
-          <i class="far fa-heart"></i> <span>35</span>
-        </div>
-        <div class="action">
-          <i class="far fa-bookmark"></i>
+          <i class="far fa-bookmark"></i> <span>{{tweet?.bookmarksNumber}}</span>
         </div>
       </div>
       <hr />

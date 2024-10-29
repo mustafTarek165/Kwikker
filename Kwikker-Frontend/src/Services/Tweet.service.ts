@@ -11,7 +11,7 @@ export class TweetService{
     private Url='https://localhost:7246/api/Tweets';
     constructor(private http:HttpClient)
     {
-                  console.log("hello from Tweet Service")
+                  
     }
 
     getTweetsByUserId(userId: number): Observable<CreatedTweet[]> {

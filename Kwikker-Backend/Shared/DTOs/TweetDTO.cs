@@ -6,5 +6,17 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public record TweetDTO(int id,string content,string? mediaUrl ,int userId,DateTime createdAt, string? profilePicture, string userName);
+    public record TweetDTO
+(
+    int id,
+    string content, // Default to an empty string
+    int userId,
+    DateTime createdAt, // Default to an empty string
+    string userName,
+    int likesNumber,
+    int retweetsNumber,
+    int bookmarksNumber,
+      string profilePicture = "",
+       string mediaUrl = ""
+);
 }

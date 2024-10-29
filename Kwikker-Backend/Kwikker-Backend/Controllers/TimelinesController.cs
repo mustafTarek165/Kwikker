@@ -18,10 +18,13 @@ namespace Kwikker_Backend.Controllers
         //user's tweets only =>profiles
         [HttpGet("profile/{UserId:int}")]
         public async Task<IActionResult>GetUserTimeline(int UserId)
-        {
+       {
             var timeline=await _service.TimelineService.GetUserTimeline(UserId);
-        
-            return Ok(timeline);
+
+
+            Response.Headers.Add("X-Pagination",
+            JsonSerializer.Serialize(timeline.data));
+            return Ok(timeline.twts);
         }
 
         //randomized collection of tweets of followed users => home

@@ -1,56 +1,55 @@
 <div class="profile-container">
-
-    <div style="display: flex;padding: 20px 20px;">
-        
-        <a href="home">   <i class="fa fa-arrow-left" ></i></a>
-     
-        <div style="margin-left: 20px;">
-            <span class="fw-bold">    Mustafa Tarek</span>
-            <p > {{this.count}} posts</p>
-        </div>
+  <div style="display: flex; padding: 20px 20px;">
+    <a href="home"><i class="fa fa-arrow-left"></i></a>
+    <div style="margin-left: 20px;">
+      <span class="fw-bold">Mustafa Tarek</span>
+      <p>{{ this.count }} posts</p>
     </div>
-
-    <!-- Cover Photo -->
-    <div class="cover-photo">
-      <img src="assets/download.jpg" alt="Cover Photo">
-    </div>
-    
-    <!-- Profile Info Section -->
-    <div class="profile-info">
-      <div class="profile-picture">
-        <img src="assets/download.jpg" alt="Profile Picture">
-      </div>
-      <button class=" btn  btn-primary ms-auto fw-bold edit-profile">Edit Profile</button>
-      <div class="profile-details">
-        <h2>Username</h2>
-        <p>username2</p>
-        <p class="fw-bold " style="color: aliceblue;" >Actually life isn't fair</p>
-
-        <p ><i class="fa fa-calendar"></i>  Joined At 2024/10/27</p>
-        <div style="display: flex;">
-            <p> <span style="color: white;">4</span> following</p>
-            <p style="margin-left: 10px;"> <span style="color: white;">3</span>  followers</p>
-        </div>
-
-      </div>
-    </div>
-    <div class="cus-bar">
-        <button  class="btn  btn-primary  fw-bold cus-button" (click)="getUserProfile()" #posts >Posts</button>
-
-        <button class="btn  btn-primary  fw-bold cus-button" (click)="getUserLikedTweets()" #likes>Likes</button>
-    
-        <button class="btn  btn-primary  fw-bold cus-button" (click)="getUserBookmarks()" #bookmarks>Bookmarks</button>
-    </div>
-    
-    <!-- Content Section (Posts, Likes, etc.) -->
-    <div *ngIf="profileTweets.length>0; else noTweets">
-        <div *ngFor="let tweet of profileTweets" > 
-            <app-tweet [tweet]="tweet"/>
-        </div>
-      </div>
-    
-      <ng-template #noTweets class="tweet-container" >
-          <p style="text-align: center;">No tweets found</p>
-      </ng-template>
-
   </div>
+
+  <!-- Cover Photo -->
+  <div class="cover-photo">
+    <img src="assets/download.jpg" alt="Cover Photo">
+  </div>
+
+  <!-- Profile Info Section -->
+  <div class="profile-info">
+    <div class="profile-picture">
+      <img src="assets/download.jpg" alt="Profile Picture">
+    </div>
+    <button class="btn btn-primary ms-auto fw-bold edit-profile">Edit Profile</button>
+    <div class="profile-details">
+      <h2>Username</h2>
+      <p>username2</p>
+      <p class="fw-bold" style="color: aliceblue;">Actually life isn't fair</p>
+      <p><i class="fa fa-calendar"></i> Joined At 2024/10/27</p>
+      <div style="display: flex;">
+        <a href="followees">
+          <p><span style="color: white;">{{ followees?.length || 0 }}</span> followings</p>
+        </a>
+        <a href="followers" style="margin-left: 10px;">
+          <p><span style="color: white;">{{ followers?.length || 0 }}</span> followers</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs (Posts, Likes, Bookmarks) -->
+  <div class="cus-bar">
+    <button class="btn btn-primary fw-bold cus-button" (click)="getUserProfile()" #posts>Posts</button>
+    <button class="btn btn-primary fw-bold cus-button" (click)="getUserLikedTweets()" #likes>Likes</button>
+    <button class="btn btn-primary fw-bold cus-button" (click)="getUserBookmarks()" #bookmarks>Bookmarks</button>
+  </div>
+
+  <!-- Content Section (Posts, Likes, etc.) -->
+  <div *ngIf="profileTweets.length > 0; else noTweets">
+    <div *ngFor="let tweet of profileTweets">
+      <app-tweet [tweet]="tweet"></app-tweet>
+    </div>
+  </div>
+  
+  <!-- No Tweets Template -->
+  <ng-template #noTweets class="tweet-container">
+    <p style="text-align: center;">No tweets found</p>
+  </ng-template>
+</div>
