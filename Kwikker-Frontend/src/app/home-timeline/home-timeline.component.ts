@@ -48,7 +48,7 @@ export class HomeTimelineComponent {
  
 
   GetFollowersNews():void{
-    
+    console.log("test id",this.userId);
     this.changeTapStatus(this.Following);
     this.timelinService.getFollowersNews(this.userId).subscribe((data:CreatedTweet[])=>{
       this.tweets=data;

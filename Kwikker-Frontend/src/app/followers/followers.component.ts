@@ -3,7 +3,7 @@ import { CreatedUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
 import { CommonModule } from '@angular/common';
 import { CreatedTweet } from '../../Models/Tweet.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-followers',
   standalone: true,
@@ -15,27 +15,32 @@ export class FollowersComponent {
 
   followers:CreatedUser[]=[];
 
-  followerId=2;
+  followerId=0;
   
   followStates: { [userId: number]: boolean } = {};
 
 activeButton!:ElementRef<HTMLButtonElement>;
 
-  constructor (private followService:FollowService,private router:Router){}
+  constructor (private followService:FollowService,private router:Router,private route:ActivatedRoute){}
 
   @ViewChild('followersbtn') followersbtn!:ElementRef<HTMLButtonElement>; 
   @ViewChild('followeesbtn') followeesbtn!:ElementRef<HTMLButtonElement>;
-ngAfterViewInit():void{
+  ngOnInit():void{
+    this.route.paramMap.subscribe(paramMap => {
+      this.followerId = +paramMap.get('id')!; // Extract userId from route
+        this.getFollowers();   
+    });
+  }
+
+
+
+
+  ngAfterViewInit():void{
   
   this.activeButton=this.followersbtn;
  this.changeTapStatus(this.followersbtn);
 }
 
-
-ngOnInit():void{
-if(this.followers.length==0)
-  this.getFollowers();
-}
 getFollowers():void{
   
 this.followService.getFollowers(this.followerId).subscribe((data:CreatedUser[])=>{
@@ -88,11 +93,17 @@ changeTapStatus(selectedButton: ElementRef<HTMLButtonElement>): void {
   this.activeButton = selectedButton;
 }
 goToFollowers(): void {
-  this.router.navigate(['/followers']);
+  this.router.navigate(['followers',this.followerId]);
 }
 
 goToFollowees(): void {
-  this.router.navigate(['/followees']);
+  this.router.navigate(['followees',this.followerId]);
 }
+
+
+goToProfile(userId:number):void{
+
+  this.router.navigate(['profile',userId]);
+  }
 
 }

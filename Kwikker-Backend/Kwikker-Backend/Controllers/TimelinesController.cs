@@ -51,8 +51,10 @@ namespace Kwikker_Backend.Controllers
         {
             var pagedLikedTweets = await _service.LikeService.GetUserLikedTweets(UserId, likeParameters, trackChanges: false);
 
-            Response.Headers.Add("X-Pagination",
-            JsonSerializer.Serialize(pagedLikedTweets.metaData));
+                Response.Headers.Add("X-Pagination",
+          JsonSerializer.Serialize(pagedLikedTweets.metaData));
+            
+          
 
             return Ok(pagedLikedTweets.likedTweets);
         }

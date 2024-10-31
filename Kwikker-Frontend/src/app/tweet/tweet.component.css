@@ -72,4 +72,6 @@
   .tweet-actions button:hover {
     background-color: #0056b3;
   }
-  
+  .clicked{
+    color: #ff0000;
+  }

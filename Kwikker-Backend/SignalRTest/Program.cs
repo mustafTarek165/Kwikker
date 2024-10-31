@@ -8,7 +8,7 @@ namespace SignalRTest
         {
             // Connect to the SignalR hub from the ASP.NET API
             var connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:7246/notificationHub")  // Use your actual API URL
+                .WithUrl("https://localhost:7246/notificationHub")  // Use your actual API URL
                 .Build();
 
             // Register the method to handle incoming notifications

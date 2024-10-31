@@ -2,7 +2,7 @@
     <h5 class="fw-bold">Who to follow</h5>
     <ul class="list-unstyled">
       <li *ngFor="let user of suggestedUsers" class="mb-3" style="display: flex;">
-        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+        <a (click)="goToProfile(user.id)" class="nav-link text-white">
           <img [src]="user.profilePicture" alt="{{ user.userName }}" >
           <div>
             <p class="mb-0 fw-bold">{{ user.userName }}</p>
@@ -17,7 +17,7 @@
         (click)="checkFollow(user.id)">
         <span>{{ isFollowed(user.id) ? 'Unfollow' : 'Follow' }}</span>
       </button>
-        
+
       </li>
       
     </ul>

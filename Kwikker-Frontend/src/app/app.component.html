@@ -1,11 +1,13 @@
 <!-- app.component.html -->
 <div class="grid-container">
     <div class="grid-item " >
-      <app-side-bar></app-side-bar>
+      <app-side-bar [userId]="userId" ></app-side-bar>
     </div>
+  
 
     <div class="grid-item router" style="max-width: 600px;">
        
+
       <router-outlet></router-outlet> <!-- Main content area -->
         
       

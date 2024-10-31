@@ -23,4 +23,21 @@ export class TweetService{
       return this.http.post(`${this.Url}/${userId}`, tweetToCreate);
     }
 
+    createLike(userId:number,tweetId:number):Observable<any>{
+      return this.http.post(`${this.Url}/like/${userId}/${tweetId}`,[]);
+    }
+    removeLike(userId:number,tweetId:number):Observable<any>{
+      return this.http.delete(`${this.Url}/like/${userId}/${tweetId}`);
+    }
+    
+
+    createRetweet(userId:number,tweetId:number):Observable<any>{
+      return this.http.post(`${this.Url}/retweet/${userId}/${tweetId}`,[]);
+    }
+
+    removeRetweet(userId:number,tweetId:number):Observable<any>{
+      return this.http.delete(`${this.Url}/retweet/${userId}/${tweetId}`);
+    }
+
+
 }

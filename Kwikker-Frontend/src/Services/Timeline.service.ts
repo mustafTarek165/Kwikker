@@ -27,6 +27,8 @@ export class TimelineService
   }
 
   getUserLikedTweets(userId: number): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
+
+    console.log('hello from timeline service');
     return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`, {
         observe: 'response'
     }).pipe(
@@ -34,11 +36,12 @@ export class TimelineService
             // Extract metadata from X-Pagination header
             const paginationHeader = response.headers.get('X-Pagination');
             let totalCount = 0;
-
+            console.log('hello from timeline service');
             if (paginationHeader) {
                 const metaData = JSON.parse(paginationHeader);
                 totalCount = metaData.TotalCount || 0;
                 console.log(metaData);
+                console.log(metaData.totalCount);
             }
 
             return {

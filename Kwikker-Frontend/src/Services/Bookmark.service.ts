@@ -37,4 +37,12 @@ export class BookmarkService {
             })
         );
     }
+    createBookmark(userId:number,tweetId:number):Observable<any>{
+        return this.http.post(`${this.BookmarksUrl}/${userId}/${tweetId}`,[]);
+      }
+      removeBookmark(userId:number,tweetId:number):Observable<any>{
+        return this.http.delete(`${this.BookmarksUrl}/${userId}/${tweetId}`);
+      }
+  
+    
 }

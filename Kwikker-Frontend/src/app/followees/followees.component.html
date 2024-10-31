@@ -6,7 +6,7 @@
 
     <ul class="list-unstyled" style="margin:40px 20px">
       <li *ngFor="let user of followees" class="mb-3" style="display: flex;">
-        <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+        <a (click)="goToProfile(user.id)" class="text-decoration-none text-dark d-flex align-items-center">
           <img [src]="user.profilePicture" alt="{{ user.userName }}" >
           <div>
             <p class="mb-0 fw-bold">{{ user.userName }}</p>

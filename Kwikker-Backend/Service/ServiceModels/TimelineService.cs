@@ -83,25 +83,16 @@ namespace Service.ServiceModels
         public async Task<(IEnumerable<TweetDTO>twts,MetaData data)> GetUserTimeline(int UserId)
         {
 
-            CacheKey += "profile" + UserId;
-            var cachedTimeline = await _redisCache.StringGetAsync(CacheKey);
-            if(!cachedTimeline.HasValue)
-            {
+           
+         
                 TweetParameters tweetParameters = new TweetParameters();
 
                 var tweetsValues = await _tweetService.GetTweetsByUser(UserId, tweetParameters, trackChanges: false);
 
-                Console.WriteLine(JsonSerializer.Serialize(tweetsValues));
-                var serializedTimeline = JsonSerializer.Serialize(tweetsValues);
-
-                await _redisCache.StringSetAsync(CacheKey, serializedTimeline, CacheExpiration);
+   
 
                 return (twts:tweetsValues.tweets,data:tweetsValues.metaData);
-            }
-
-            var retreived = JsonSerializer.Deserialize<(IEnumerable<TweetDTO>twts,MetaData data)>(cachedTimeline!);
-
-            return retreived!;
+          
         }
 
         // random not related to followers or user

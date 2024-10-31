@@ -16,13 +16,15 @@
       <div class="tweet-actions">
         
         <div class="action">
-          <i class="fas fa-retweet"></i> <span>{{tweet?.retweetsNumber}}</span>
+          <i class="far fa-heart" [ngClass]="isLiked ? 'clicked' :''" (click)="updateLike()"></i> <span>{{tweet?.likesNumber}}</span>
         </div>
+
         <div class="action">
-          <i class="far fa-heart"></i> <span>{{tweet?.likesNumber}}</span>
+          <i class="fas fa-retweet"   [ngClass]="isRetweeted ? 'clicked' :''"  (click)="updateRetweet()"></i> <span>{{tweet?.retweetsNumber}}</span>
         </div>
+        
         <div class="action">
-          <i class="far fa-bookmark"></i> <span>{{tweet?.bookmarksNumber}}</span>
+          <i class="far fa-bookmark" [ngClass]="isBookmarked ? 'clicked' :''" (click)="updateBookmark()"></i> <span>{{tweet?.bookmarksNumber}}</span>
         </div>
       </div>
       <hr />

@@ -72,6 +72,7 @@
     border-radius: 30% ;
     color: black;
      width: 100px;
+     height: 50px;
      text-align: center;
   }
   .btn-unfollow{
@@ -81,6 +82,7 @@
     border: 1px solid rgb(74, 70, 70);
     border-radius: 30% ;
      width: 100px;
+     height: 50px;
      text-align: center;
   }
 
@@ -102,4 +104,7 @@
 }
 .tabs > :first-child{
     border-right: 1px solid rgb(74, 70, 70);;
+}
+a{
+ cursor:pointer; 
 }

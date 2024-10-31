@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { TimelineService } from '../../Services/Timeline.service';
 import { CreatedTweet } from '../../Models/Tweet.model';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,8 @@ import { BookmarkService } from '../../Services/Bookmark.service';
 import { FollowService } from '../../Services/Follow.service';
 import { CreatedUser } from '../../Models/User.model';
 import { TweetWithMetaData } from '../../Models/TweetWithMetaData.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../Services/User.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,10 +18,12 @@ import { TweetWithMetaData } from '../../Models/TweetWithMetaData.model';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements AfterViewInit {
-  userId = 2;
+  
+  userId: number = 0;
   profileTweets: CreatedTweet[] = [];
   followers: CreatedUser[] = [];
   followees: CreatedUser[] = [];
+  user!: CreatedUser;
   count: number = 0;
 
   @ViewChild('posts') posts!: ElementRef<HTMLButtonElement>;
@@ -31,22 +35,49 @@ export class ProfileComponent implements AfterViewInit {
   constructor(
     private timelineService: TimelineService,
     private bookmarksService: BookmarkService,
-    private followService: FollowService
+    private followService: FollowService,
+    private userService: UserService,
+    private router:Router,
+    private route: ActivatedRoute
   ) {}
 
-  ngAfterViewInit(): void {
-    this.activeButton = this.posts;
+
+  
+  ngOnInit(): void {
+    // Subscribe to changes in the route parameters
+    this.route.paramMap.subscribe(paramMap => {
+      this.userId = +paramMap.get('id')!; // Extract userId from route
+      console.log('test profile id',this.userId);
+      this.fetchProfileData(); // Fetch data for the new userId
+    });
+  }
+  fetchProfileData(): void {
+    
+    this.getUser();
     this.getUserProfile();
     this.getFollowers();
     this.getFollowees();
   }
 
+  ngAfterViewInit(): void {
+    this.activeButton = this.posts;
+    this.changeTapStatus(this.posts); // Set initial active button to 'posts'
+  }
+
+  getUser(): void {
+    this.userService.getUser(this.userId).subscribe((data) => {
+      this.user = data;
+    });
+  }
+
   getUserProfile(): void {
-    this.changeTapStatus(this.posts);
+    
     this.timelineService.getProfile(this.userId).subscribe(
       (data) => {
         this.profileTweets = data.tweets || [];
         this.count = data.totalCount;
+        console.log('test data',data);
+
       },
       (error) => {
         console.log('Error fetching profile data', error);
@@ -57,17 +88,15 @@ export class ProfileComponent implements AfterViewInit {
   getUserBookmarks(): void {
     this.changeTapStatus(this.bookmarks);
     this.bookmarksService.getBookmarks(this.userId).subscribe(
-        (data) => {
-            this.profileTweets = data.tweets;
-            this.count = data.totalCount; // Set the count to the TotalCount from headers
-            
-        },
-        (error) => {
-            console.log('Error fetching user bookmarks', error);
-        }
+      (data) => {
+        this.profileTweets = data.tweets;
+        this.count = data.totalCount;
+      },
+      (error) => {
+        console.log('Error fetching user bookmarks', error);
+      }
     );
-}
-
+  }
 
   getUserLikedTweets(): void {
     this.changeTapStatus(this.likes);
@@ -114,4 +143,13 @@ export class ProfileComponent implements AfterViewInit {
     selectedButton.nativeElement.style.color = 'white';
     this.activeButton = selectedButton;
   }
+  goToFollowees(userId:number):void{
+
+    this.router.navigate(['/followees',userId]);
+    }
+    goToFollowers(userId:number):void{
+
+      this.router.navigate(['/followers',userId]);
+      }
+
 }

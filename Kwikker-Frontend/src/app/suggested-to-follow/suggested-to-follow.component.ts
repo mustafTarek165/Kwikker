@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreatedUser } from '../../Models/User.model';
 import { FollowService } from '../../Services/Follow.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-suggested-to-follow',
   standalone: true,
@@ -19,7 +20,7 @@ export class SuggestedToFollowComponent {
  
 
 
-constructor (private followService:FollowService){}
+constructor (private followService:FollowService,private router:Router){}
 
 checkFollow(followeeId: number): void {
 
@@ -43,5 +44,9 @@ isFollowed(followeeId: number): boolean {
   return this.followStates[followeeId] || false; // Return follow state or false if not defined
 }
 
+goToProfile(userId:number):void{
+
+this.router.navigate(['profile',userId]);
+}
 
 }
