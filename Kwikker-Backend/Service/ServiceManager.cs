@@ -49,7 +49,7 @@ namespace Service
             LikeService(repositoryManager, logger,mapper,hubContext, _notificationService.Value));
 
             _followService = new Lazy<IFollowService>(() => new
-          FollowService(repositoryManager, logger,mapper,_notificationService.Value,_userService.Value));
+          FollowService(repositoryManager, logger,mapper,redisConnection,_notificationService.Value,_userService.Value));
 
             _bookmarkService = new Lazy<IBookmarkService>(() => new
           BookmarkService(repositoryManager, logger, mapper));

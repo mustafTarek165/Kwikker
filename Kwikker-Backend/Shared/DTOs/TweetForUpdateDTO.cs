@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public record TweetForUpdateDTO(int id,string content,string mediaUrl);
+    public record TweetForUpdateDTO(int id,string content,string? mediaUrl);
     
 }

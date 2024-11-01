@@ -40,7 +40,12 @@ namespace Repository.RepositoryModels
             return result!;
         }
 
-        public void DeleteRetweet(Retweet retweet) => Delete(retweet);
+        public void DeleteRetweet(Retweet retweet)
+        {
+            var tweet = RepositoryContext.Set<Tweet>().FirstOrDefault(x => x.ID.Equals(retweet.TweetId));
+            if (tweet != null) tweet.RetweetsNumber--;
+            Delete(retweet);
+        }
 
         public async Task<int> GetTweetRetweetsNumber(int tweetId, bool trackChanges)
      => await FindByCondition(x => x.TweetId.Equals(tweetId), trackChanges).Include(x => x.User).CountAsync();

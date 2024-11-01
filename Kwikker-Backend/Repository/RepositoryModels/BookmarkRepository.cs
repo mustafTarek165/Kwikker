@@ -33,7 +33,12 @@ namespace Repository.RepositoryModels
         }
 
         public void DeleteBookmark(Bookmark bookmark)
-       => Delete(bookmark);
+        {
+            var tweet = RepositoryContext.Set<Tweet>().FirstOrDefault(x => x.ID.Equals(bookmark.TweetId));
+            if (tweet != null) tweet.BookmarksNumber--;
+            Delete(bookmark);
+        }
+ 
 
         public async Task<Bookmark> GetBookmark(int userId, int tweetId, bool trackChanges)
         {

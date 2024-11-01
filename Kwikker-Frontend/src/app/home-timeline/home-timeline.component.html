@@ -31,17 +31,26 @@
             <button class="btn btn-primary" style="border: inherit;" [disabled]="!isTweetValid" (click)="submitTweet()">Tweet</button>
         </div>
     </div>
-    
-    <div *ngIf="tweets.length>0; else noTweets">
+    <div *ngIf="showTweetPost" >
+       
+        <app-tweet-post [currentTweet]="tweetForUpdate" (close)="closePopUp()" (newTweet)="handleUpdate($event)" class="popup-container" />
+    </div>
+
+    <div *ngIf="tweets.size>0; else noTweets">
       <div *ngFor="let tweet of tweets" class="tweet"> 
-          <app-tweet [tweet]="tweet" [userId]="userId" />
+          <app-tweet [tweet]="tweet" [userId]="userId"  
+          (tweetDeleted)="handleDeletion($event)"  
+          (updateTweet)="receiveForUpdate($event)"
+          />
       </div>
     </div>
 
     <ng-template #noTweets class="tweet-container" >
         <p style="text-align: center;">No tweets found</p>
     </ng-template>
-
+    <div *ngIf="isLoading" class="loading-indicator">
+        Loading more content...
+      </div>
 </div>
 
 

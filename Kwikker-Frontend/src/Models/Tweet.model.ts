@@ -3,6 +3,11 @@ export interface TweetForCreation
     mediaUrl: string | ArrayBuffer | null,
     content:string
 }
+export interface TweetForUpdate{
+    id:number,
+    mediaUrl:string|ArrayBuffer|null,
+    content:string
+}
 export interface CreatedTweet
 {
     id:number,

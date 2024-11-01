@@ -41,11 +41,23 @@
     <button class="btn btn-primary fw-bold cus-button" (click)="getUserBookmarks()" #bookmarks>Bookmarks</button>
   </div>
 
+  <div *ngIf="showTweetPost" >
+       
+    <app-tweet-post [currentTweet]="tweetForUpdate" (close)="closePopUp()" (newTweet)="handleUpdate($event)" class="popup-container" />
+</div>
+
   <!-- Content Section (Posts, Likes, etc.) -->
-  <div *ngIf="profileTweets.length > 0; else noTweets">
+  <div *ngIf="profileTweets.size > 0; else noTweets">
     <div *ngFor="let tweet of profileTweets">
       
-      <app-tweet [tweet]="tweet"  [userId]="userId"></app-tweet>
+      <app-tweet [tweet]="tweet"  [userId]="userId"
+      [isLiked]="likedTweets.has(tweet.id)"
+      [isBookmarked]="bookmarkes.has(tweet.id)"
+      
+      (tweetDeleted)="handleDeletion($event)"
+        (updateTweet)="receiveForUpdate($event)"
+
+      ></app-tweet>
     </div>
   </div>
   

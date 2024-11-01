@@ -1,4 +1,4 @@
-import { Component, Input,  } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges,  } from '@angular/core';
 import { TweetService } from '../../Services/Tweet.service';
 import { CreatedTweet } from '../../Models/Tweet.model';
 import { CommonModule } from '@angular/common';
@@ -17,14 +17,21 @@ export class TweetComponent {
  @Input() tweet!:CreatedTweet
 
  @Input() userId=0;
-  isRetweeted:boolean=false;
-  isLiked:boolean=false;
-  isBookmarked:boolean=false;
+ 
+ @Input() isRetweeted:boolean=false;
+ @Input() isLiked:boolean=false;
+ @Input() isBookmarked:boolean=false;
+
+
+ 
+ @Output() tweetDeleted = new EventEmitter<CreatedTweet>();
+
+@Output() updateTweet=new EventEmitter<CreatedTweet>();
   constructor(private tweetService: TweetService,private bookmarkService:BookmarkService) { }
 
   updateLike():void
   {
-         if(this.isLiked)
+         if(this.isLiked &&this.tweet.likesNumber>0)
           {
                 
               this.tweetService.removeLike(this.userId,this.tweet.id).subscribe();
@@ -39,7 +46,7 @@ export class TweetComponent {
           this.isLiked=!this.isLiked;
   }
   updateBookmark():void{
-     if(this.isBookmarked)
+     if(this.isBookmarked&&this.tweet.bookmarksNumber>0)
      {
       this.bookmarkService.removeBookmark(this.userId,this.tweet.id).subscribe();
       this.tweet.bookmarksNumber--;
@@ -53,7 +60,7 @@ export class TweetComponent {
   }
   
   updateRetweet():void{
-    if(this.isRetweeted)
+    if(this.isRetweeted&&this.tweet.retweetsNumber>0)
     {
       this.tweetService.removeRetweet(this.userId,this.tweet.id).subscribe();
       this.tweet.retweetsNumber--;
@@ -65,6 +72,24 @@ export class TweetComponent {
     }
     this.isRetweeted=!this.isRetweeted;
  }
- 
+ isDropdownOpen = false;
+
+toggleDropdown() {
+  this.isDropdownOpen = !this.isDropdownOpen;
+}
+
+editTweet() {
+  // Logic for editing the tweet
+
+  this.updateTweet.emit(this.tweet);
+  console.log("Edit tweet clicked");
+}
+
+deleteTweet() {
+  // Logic for deleting the tweet
+  console.log("Delete tweet clicked");
+  this.tweetService.removeTweet(this.tweet.id).subscribe();
+  this.tweetDeleted.emit(this.tweet);
+}
 
 }

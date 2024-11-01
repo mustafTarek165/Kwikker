@@ -1,0 +1,29 @@
+<div  >
+    <div class="createtweet-container">
+      
+      <div class="tweet-header">
+        
+        <textarea
+          class="tweet-textarea"
+          placeholder="What's happening?"
+          rows="3"
+          [(ngModel)]="currentTweet.content"
+          (input)="checkTweetContent()">
+        </textarea>
+      </div>
+      
+      <div *ngIf="currentTweet.mediaUrl">
+        <img [src]="currentTweet.mediaUrl" alt="Selected Image" class="uploaded-image" />
+      </div>
+  
+      <div class="tweet-footer">
+        <div class="tweet-icons">
+          <i class="fas fa-download tweet-icon" title="Download Media" (click)="triggerFileInput()"></i>
+          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept="image/*">
+        </div>
+        <button class="btn btn-primary" style="border: inherit;" [disabled]="!isTweetValid" (click)="sendTweet()">Tweet</button>
+        <button class="btn btn-secondary" style="margin-left: 10px;" (click)="closePopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  

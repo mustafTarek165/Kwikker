@@ -6,6 +6,7 @@ using Shared.DTOs;
 using Shared.RequestFeatures;
 using Entities.Models;
 using System.Dynamic;
+using StackExchange.Redis;
 namespace Service.ServiceModels
 {
     internal sealed class FollowService : IFollowService
@@ -13,17 +14,20 @@ namespace Service.ServiceModels
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IDatabase _redisCache;
         private readonly INotificationService _notification;
 
         private readonly IUserService _userService;
         public FollowService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, INotificationService notification, IUserService userService)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection, INotificationService notification, IUserService userService)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             _notification = notification;
-            _userService = userService; 
+            _userService = userService;
+            _redisCache = redisConnection.GetDatabase();
+
         }
 
         public async Task CreateFollow(int followerId, int followeeId, bool trackChanges)
@@ -38,6 +42,9 @@ namespace Service.ServiceModels
              
             
              _repository.FollowRepository.CreateFollow(followerId, followeeId);
+
+            var cacheKey = "TimeLinefollow" + followerId;
+            await _redisCache.KeyDeleteAsync(cacheKey);
 
             await _notification.CreateNotification(followerId, "Follow", followee.ID, $"{follower.Username} has  Followed you");
 

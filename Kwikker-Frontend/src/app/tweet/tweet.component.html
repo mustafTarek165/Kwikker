@@ -1,33 +1,49 @@
-
-    <div class="tweet-container">
-      <div class="tweet-header">
-        <a href="#">
+<div class="tweet-container">
+   <div class="tweet-header">
+    <a href="#">
+      <img src="{{tweet?.profilePicture}}" alt="User Name" class="avatar">
+      <strong style="margin-left: 10px">{{tweet?.userName}}</strong>
+    </a>
+    <div class="dropdown" style="position: relative; margin-left: 80%;">
+      <a href="#"  id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
+        <!-- Font Awesome ellipsis icon for options -->
+        <i class="fas fa-ellipsis-v" *ngIf="tweet.userId==userId"></i>
+      </a>
+      
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow cus-background">
+        <li><a class="dropdown-item" (click)="editTweet()">Edit</a></li>
+        <li><a class="dropdown-item" (click)="deleteTweet()">Delete</a></li>
         
-          <img src="{{tweet?.profilePicture}}" alt="User Name" class="avatar">
-          <strong style="margin-left: 10px">{{tweet?.userName}}</strong>
-        </a>
-      </div>
-      <div class="tweet-content">
-        {{tweet?.content}}
-      </div>
-      <div class="tweet-img" *ngIf="tweet?.mediaUrl" >
-        <img src="{{tweet?.mediaUrl}}" alt="User Name" style="width: 200px; height: 200px;">
-      </div>
-      <div class="tweet-actions">
-        
-        <div class="action">
-          <i class="far fa-heart" [ngClass]="isLiked ? 'clicked' :''" (click)="updateLike()"></i> <span>{{tweet?.likesNumber}}</span>
-        </div>
-
-        <div class="action">
-          <i class="fas fa-retweet"   [ngClass]="isRetweeted ? 'clicked' :''"  (click)="updateRetweet()"></i> <span>{{tweet?.retweetsNumber}}</span>
-        </div>
-        
-        <div class="action">
-          <i class="far fa-bookmark" [ngClass]="isBookmarked ? 'clicked' :''" (click)="updateBookmark()"></i> <span>{{tweet?.bookmarksNumber}}</span>
-        </div>
-      </div>
-      <hr />
+      </ul>
     </div>
     
+  </div>
+  
+  <div class="tweet-content">
+    {{tweet?.content}}
+  </div>
+  <div class="tweet-img" *ngIf="tweet?.mediaUrl">
+    <img src="{{tweet?.mediaUrl}}" alt="User Name" style="width: 200px; height: 200px;">
+  </div>
+  <div class="tweet-actions">
+    <div class="action">
+      <i class="far fa-heart" [ngClass]="isLiked ? 'clicked' : ''" (click)="updateLike()"></i>
+      <span>{{tweet?.likesNumber}}</span>
+    </div>
+    <div class="action">
+      <i class="fas fa-retweet" [ngClass]="isRetweeted ? 'clicked' : ''" (click)="updateRetweet()"></i>
+      <span>{{tweet?.retweetsNumber}}</span>
+    </div>
+    <div class="action">
+      <i class="far fa-bookmark" [ngClass]="isBookmarked ? 'clicked' : ''" (click)="updateBookmark()"></i>
+      <span>{{tweet?.bookmarksNumber}}</span>
+    </div>
 
+  
+    
+    
+    
+
+  </div>
+  <hr />
+</div>

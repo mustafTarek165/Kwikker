@@ -37,7 +37,13 @@ namespace Repository.RepositoryModels
           var result=  await FindByCondition(x => x.UserId.Equals(userId) && x.TweetId.Equals(tweetId), trackChanges).SingleOrDefaultAsync();
             return result!;
          }
-        public void DeleteLike(Like like)=> Delete(like);
+        public void DeleteLike(Like like) {
+
+            var tweet = RepositoryContext.Set<Tweet>().FirstOrDefault(x => x.ID.Equals(like.TweetId));
+            if (tweet != null) tweet.LikesNumber--;
+            Delete(like);
+        }
+    
 
 
         public async Task<int> GetTweetLikesNumber(int tweetId, bool trackChanges)

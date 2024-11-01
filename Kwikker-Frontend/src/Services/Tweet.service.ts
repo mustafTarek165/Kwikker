@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { CreatedTweet, TweetForCreation } from "../Models/Tweet.model";
+import { CreatedTweet, TweetForCreation, TweetForUpdate } from "../Models/Tweet.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -21,6 +21,12 @@ export class TweetService{
     createTweet(userId:number,tweetToCreate:TweetForCreation):Observable<any>{
          
       return this.http.post(`${this.Url}/${userId}`, tweetToCreate);
+    }
+    updateTweet(tweetForUpdate:TweetForUpdate):Observable<CreatedTweet>{
+      return this.http.put<CreatedTweet>(`${this.Url}`,tweetForUpdate);
+    }
+    removeTweet(tweetId:number):Observable<any>{
+      return this.http.delete(`${this.Url}/${tweetId}`);
     }
 
     createLike(userId:number,tweetId:number):Observable<any>{

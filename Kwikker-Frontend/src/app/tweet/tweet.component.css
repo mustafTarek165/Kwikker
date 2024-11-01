@@ -30,7 +30,9 @@
     text-align: center;
     margin-top: 10px;
   }
-  
+  .tweet-img img{
+    border-radius: 0;
+  }
   .tweet-actions {
     margin-top: 10px;
     display: flex;
@@ -72,6 +74,19 @@
   .tweet-actions button:hover {
     background-color: #0056b3;
   }
-  .clicked{
-    color: #ff0000;
+  
+  
+  .action .clicked {
+    color: #00bfff; /* Change color to blue when retweeted */
   }
+  
+ 
+  
+  /* Optional: Add some transition for smooth effect */
+  .action i {
+    transition: color 0.3s ease;
+  }
+  
+  
+ 
+  

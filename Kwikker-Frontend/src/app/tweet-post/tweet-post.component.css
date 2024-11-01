@@ -1,0 +1,14 @@
+.close-button {
+    position: relative;
+
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: red; /* Change color on hover for better visibility */
+  }
+ 
