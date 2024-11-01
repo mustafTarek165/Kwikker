@@ -51,22 +51,20 @@ namespace Repository.RepositoryModels
 
 
 
-        public async Task<PagedList<Tweet>> GetLikedTweetsByUser(int UserId, LikeParameters likeParameters, bool trackChanges)
+        public async Task<List<Tweet>> GetLikedTweetsByUser(int UserId, bool trackChanges)
         {
             // Build the query with a join and filtering logic
             var likes = FindByCondition(b => b.UserId == UserId, trackChanges)
-                .Sort<Like>(likeParameters.OrderBy!)
+                .OrderBy(x=>x.LikedAt)
                 .Join(
                     RepositoryContext.Set<Tweet>(), // Join with Tweets table
                     b => b.TweetId,                 // Foreign key in Like
                     t => t.ID,                      // Primary key in Tweet
                     (b, t) => t                  // Select entire Tweet entity
-                );
+                ).ToList();
 
 
-            return await PagedList<Tweet>
-                   .ToPagedListAsync(likes, likeParameters.PageNumber,
-                   likeParameters.PageSize);
+            return likes;
         }
     }
 }

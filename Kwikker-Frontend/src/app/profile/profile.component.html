@@ -1,4 +1,10 @@
-<div class="profile-container">
+<div class="profile-container"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="500"
+     (scrolled)="onScroll()"
+     [scrollWindow]="true"> <!-- Set scrollWindow to true -->
+
   <div style="display: flex; padding: 20px 20px;">
     <a href="home"><i class="fa fa-arrow-left"></i></a>
     <div style="margin-left: 20px;">
@@ -41,26 +47,29 @@
     <button class="btn btn-primary fw-bold cus-button" (click)="getUserBookmarks()" #bookmarks>Bookmarks</button>
   </div>
 
-  <div *ngIf="showTweetPost" >
-       
-    <app-tweet-post [currentTweet]="tweetForUpdate" (close)="closePopUp()" (newTweet)="handleUpdate($event)" class="popup-container" />
-</div>
+  <div *ngIf="showTweetPost">
+    <app-tweet-post [currentTweet]="tweetForUpdate" (close)="closePopUp()" (newTweet)="handleUpdate($event)" class="popup-container"></app-tweet-post>
+  </div>
 
   <!-- Content Section (Posts, Likes, etc.) -->
   <div *ngIf="profileTweets.size > 0; else noTweets">
     <div *ngFor="let tweet of profileTweets">
-      
-      <app-tweet [tweet]="tweet"  [userId]="userId"
-      [isLiked]="likedTweets.has(tweet.id)"
-      [isBookmarked]="bookmarkes.has(tweet.id)"
-      
-      (tweetDeleted)="handleDeletion($event)"
-        (updateTweet)="receiveForUpdate($event)"
-
-      ></app-tweet>
+      <app-tweet 
+        *ngIf="(likedTweets.has(tweet.id) && this.activeButton.nativeElement==this.likes) || (bookmarkes.has(tweet.id) 
+        && this.activeButton.nativeElement==this.bookmarks) || (allTweets.has(tweet.id) && this.activeButton.nativeElement==this.posts)"
+        [tweet]="tweet"
+        [userId]="userId"
+        [isLiked]="likedTweets.has(tweet.id)"
+        [isBookmarked]="bookmarkes.has(tweet.id)"
+        (tweetDeleted)="handleDeletion($event)"
+        (updateTweet)="receiveForUpdate($event)">
+      </app-tweet>
     </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading">Loading...</div>
   </div>
-  
+
   <!-- No Tweets Template -->
   <ng-template #noTweets class="tweet-container">
     <p style="text-align: center;">No tweets found</p>

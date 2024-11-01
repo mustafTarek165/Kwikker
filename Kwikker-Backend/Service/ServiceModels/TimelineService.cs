@@ -48,14 +48,16 @@ namespace Service.ServiceModels
             var cachedTimeline=await _redisCache.StringGetAsync(CacheKey);
             if(!cachedTimeline.HasValue)
             {
+                Random rnd = new Random();
                 FollowingParameters followingParameters = new FollowingParameters();
-                var randomFollowees = await _followService.GetUserFollowees(UserId, followingParameters, trackChanges: false);
+                var Followees = await _followService.GetUserFollowees(UserId, followingParameters, trackChanges: false);
+                List<GeneralUserDTO> randomFollowees = new List<GeneralUserDTO>();
 
-
-                TweetParameters tweetParameters = new TweetParameters();
-
+                randomFollowees=Followees.followees.OrderBy(x => rnd.Next()).ToList();
+                 TweetParameters tweetParameters = new TweetParameters();   
+   
                 List<TweetDTO> homeTimeline = new List<TweetDTO>();
-                foreach (var followee in randomFollowees.followees)
+                foreach (var followee in randomFollowees)
                 {
 
                     var randomTweets = await _tweetService.GetTweetsByUser(followee.id, tweetParameters, trackChanges: false);
@@ -63,7 +65,7 @@ namespace Service.ServiceModels
 
                 }
                 List<TweetDTO> randomeHomeTimeline = new List<TweetDTO>();
-                Random rnd = new Random();
+               
                 randomeHomeTimeline = homeTimeline.OrderBy(x => rnd.Next()).ToList();
 
 
@@ -79,22 +81,6 @@ namespace Service.ServiceModels
 
         }
 
-        //for profiles
-        public async Task<(IEnumerable<TweetDTO>twts,MetaData data)> GetUserTimeline(int UserId)
-        {
-
-           
-         
-                TweetParameters tweetParameters = new TweetParameters();
-
-                var tweetsValues = await _tweetService.GetTweetsByUser(UserId, tweetParameters, trackChanges: false);
-
-   
-
-                return (twts:tweetsValues.tweets,data:tweetsValues.metaData);
-          
-        }
-
         // random not related to followers or user
         public async Task<List<TweetDTO>> GetRandomTimeline(int UserId)
         {
@@ -108,10 +94,11 @@ namespace Service.ServiceModels
 
                 availableUsers = await _followService.GetRandomUsers(UserId);
 
+                TweetParameters tweetParameters = new TweetParameters(); 
                 List<TweetDTO> randomTimeline = new List<TweetDTO>();
                 foreach (var userId in availableUsers)
                 {
-                    TweetParameters tweetParameters = new TweetParameters();
+                   
                     var randomTweets = await _tweetService.GetTweetsByUser(userId, tweetParameters, trackChanges: false);
                     randomTimeline.AddRange(randomTweets.tweets);
 
@@ -133,6 +120,15 @@ namespace Service.ServiceModels
             return retreived!;
 
         }
+        //for profiles
+        public async Task<(IEnumerable<TweetDTO> twts, MetaData data)> GetUserTimeline(int UserId, TweetParameters tweetParameters)
+        {
+            var tweetsValues = await _tweetService.GetTweetsByUser(UserId, tweetParameters, trackChanges: false);
+
+            return (twts: tweetsValues.tweets, data: tweetsValues.metaData);
+
+        }
+
 
     }
 }

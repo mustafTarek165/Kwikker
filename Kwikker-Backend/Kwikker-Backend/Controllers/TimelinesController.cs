@@ -17,9 +17,9 @@ namespace Kwikker_Backend.Controllers
         public TimelinesController(IServiceManager service) => _service = service;
         //user's tweets only =>profiles
         [HttpGet("profile/{UserId:int}")]
-        public async Task<IActionResult>GetUserTimeline(int UserId)
+        public async Task<IActionResult>GetUserTimeline(int UserId,[FromQuery]TweetParameters tweetParameters)
        {
-            var timeline=await _service.TimelineService.GetUserTimeline(UserId);
+            var timeline=await _service.TimelineService.GetUserTimeline(UserId,tweetParameters);
 
 
             Response.Headers.Add("X-Pagination",
@@ -29,7 +29,7 @@ namespace Kwikker_Backend.Controllers
 
         //randomized collection of tweets of followed users => home
         [HttpGet("followed/{UserId:int}")]
-        public async Task<IActionResult> GetHomeTimeline(int UserId )
+        public async Task<IActionResult> GetHomeTimeline(int UserId)
         {
 
             var timeline = await _service.TimelineService.GetHomeTimeline(UserId);
@@ -47,16 +47,14 @@ namespace Kwikker_Backend.Controllers
             return Ok(randomTimeline);
         }
         [HttpGet("LikedTweets/{UserId:int}")]
-        public async Task<IActionResult> GetLikedTweetsByUser(int UserId, [FromQuery] LikeParameters likeParameters)
+        public async Task<IActionResult> GetLikedTweetsByUser(int UserId)
         {
-            var pagedLikedTweets = await _service.LikeService.GetUserLikedTweets(UserId, likeParameters, trackChanges: false);
+           var pagedLikedTweets = await _service.LikeService.GetUserLikedTweets(UserId, trackChanges: false);
 
-                Response.Headers.Add("X-Pagination",
-          JsonSerializer.Serialize(pagedLikedTweets.metaData));
             
           
 
-            return Ok(pagedLikedTweets.likedTweets);
+            return Ok(pagedLikedTweets);
         }
 
     }

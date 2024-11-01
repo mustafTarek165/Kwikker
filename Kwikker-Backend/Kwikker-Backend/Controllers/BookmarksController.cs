@@ -32,18 +32,12 @@ namespace Kwikker_Backend.Controllers
         }
 
         [HttpGet("{UserId:int}")]
-        public async Task<IActionResult> GetBookmarksByUser(int UserId, [FromQuery] BookmarkParameters bookmarkParameters)
+        public async Task<IActionResult> GetBookmarksByUser(int UserId)
         {
-           var pagedBookmarks= await _service.BookmarkService.GetUserBookmarks(UserId,bookmarkParameters,trackChanges:false);
+           var Bookmarks= await _service.BookmarkService.GetUserBookmarks(UserId,trackChanges:false);
 
-            Response.Headers.Add("X-Pagination",
-            JsonSerializer.Serialize(pagedBookmarks.metaData));
-
-            return Ok(pagedBookmarks.bookmarks);
+            return Ok(Bookmarks);
         }
-
-
-
 
     }
 

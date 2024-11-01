@@ -120,13 +120,23 @@ a{
   background: rgba(0, 0, 0, 0.5);
 
 }
-.loading-indicator {
-  position: relative;
 
  
-  color: #fff;
-  padding: 10px 20px;
 
-  font-size: 14px;
+.search-results {
+  height: 30rem;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data-card{
+  padding: 5px;
+  margin: 8px 0px;
+  width: 20%;
+  border: 1px solid black;
+  font-size: 30px;
   text-align: center;
+  background-color: rgb(236, 234, 111);
 }

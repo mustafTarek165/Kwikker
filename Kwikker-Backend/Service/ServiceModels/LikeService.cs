@@ -63,19 +63,19 @@ namespace Service.ServiceModels
             return likes;
         }
 
-        public async Task<(IEnumerable<TweetDTO> likedTweets, MetaData metaData)> GetUserLikedTweets(int userId, LikeParameters likeParameters, bool trackChanges)
+        public async Task<IEnumerable<TweetDTO>> GetUserLikedTweets(int userId, bool trackChanges)
         {
-            var likedTweetsWithMetaData = await _repository.LikeRepository.GetLikedTweetsByUser(userId, likeParameters, trackChanges);
+            var likedTweetsWithMetaData = await _repository.LikeRepository.GetLikedTweetsByUser(userId,  trackChanges);
 
 
             if (!likedTweetsWithMetaData.Any())
             {
-                return (Enumerable.Empty<TweetDTO>(), new MetaData());
+                return Enumerable.Empty<TweetDTO>();
             }
 
             var likedTweetsDTOs = _mapper.Map<IEnumerable<TweetDTO>>(likedTweetsWithMetaData);
 
-            return (likedTweets: likedTweetsDTOs, metaData: likedTweetsWithMetaData.MetaData);
+            return likedTweetsDTOs;
         }
 
     }

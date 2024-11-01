@@ -16,6 +16,6 @@ namespace Service.Contracts.Contracts
         Task CreateLike(int userId, int tweetid,bool trackChanges);
 
         Task DeleteLike(int userId, int tweetid, bool trackChanges);
-        Task<(IEnumerable<TweetDTO> likedTweets, MetaData metaData)> GetUserLikedTweets(int userId, LikeParameters likeParameters, bool trackChanges);
+        Task<IEnumerable<TweetDTO>>  GetUserLikedTweets(int userId,  bool trackChanges);
     }
 }

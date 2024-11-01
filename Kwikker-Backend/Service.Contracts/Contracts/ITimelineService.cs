@@ -11,10 +11,12 @@ namespace Service.Contracts.Contracts
 {
     public interface ITimelineService
     {
-        //for prfiles
-        Task<List<TweetDTO>> GetHomeTimeline(int UserId);
+     
         //for followers news
-        Task<(IEnumerable<TweetDTO> twts, MetaData data)> GetUserTimeline(int UserId);
+        Task<List<TweetDTO>> GetHomeTimeline(int UserId);
+
+        //for profiles
+        Task<(IEnumerable<TweetDTO> twts, MetaData data)> GetUserTimeline(int UserId,TweetParameters tweetParameters);
 
         //for random not related to followers or user
         Task<List<TweetDTO>> GetRandomTimeline(int UserId);

@@ -11,16 +11,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../Services/User.service';
 import { TweetService } from '../../Services/Tweet.service';
 import { TweetPostComponent } from "../tweet-post/tweet-post.component";
-
+import { RequestParameters } from '../../Models/RequestParameters.model';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, TweetComponent, TweetPostComponent],
+  imports: [CommonModule, TweetComponent, TweetPostComponent,InfiniteScrollModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements AfterViewInit {
-  
+  requestParameters:RequestParameters={
+    PageNumber: 1,
+    PageSize: 6,
+    OrderBy: '',
+    Fields: ''
+  }
   userId: number = 0;
   profileTweets= new Set<CreatedTweet>();
   followers: CreatedUser[] = [];
@@ -58,6 +64,7 @@ export class ProfileComponent implements AfterViewInit {
       this.userId = +paramMap.get('id')!; // Extract userId from route
       console.log('test profile id',this.userId);
       this.fetchProfileData(); // Fetch data for the new userId
+    
     });
   }
   fetchProfileData(): void {
@@ -70,13 +77,24 @@ export class ProfileComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.activeButton = this.posts;
-    this.getUserProfile();
-    this.getUserLikedTweets();
     this.getUserBookmarks();
+    this.getUserLikedTweets();
+    //this.getUserProfile();
+    this.getUserProfile();
+    
      // Set initial active button to 'posts'
   }
 
 
+
+//implement infinite scroll
+isLoading:boolean=false;
+toggleLoading = ()=>this.isLoading=!this.isLoading;
+
+
+onScroll= ()=>{
+ this.getUserProfile();
+}
 
   getUser(): void {
     this.userService.getUser(this.userId).subscribe((data) => {
@@ -86,8 +104,8 @@ export class ProfileComponent implements AfterViewInit {
 
   getUserProfile(): void {
     this.changeTapStatus(this.posts);
-    this.profileTweets.clear();
-    this.timelineService.getProfile(this.userId).subscribe(
+    this.toggleLoading();
+    this.timelineService.getProfile(this.userId,this.requestParameters).subscribe(
       (data) => {
       
         data.tweets.forEach(tweet=>{
@@ -96,44 +114,52 @@ export class ProfileComponent implements AfterViewInit {
           this.allTweets.add(tweet.id);
         })
         this.count = data.totalCount;
-       
+       this.requestParameters.PageNumber++;
      
       },
       (error) => {
         console.log('Error fetching profile data', error);
+      },
+      ()=>{
+        this.toggleLoading()
       }
+        
+        
     );
   }
 
   getUserBookmarks(): void {
     this.changeTapStatus(this.bookmarks);
-    this.profileTweets.clear();
-    this.bookmarksService.getBookmarks(this.userId).subscribe(
-      (data) => {
-       
-        data.tweets.forEach(tweet=>{
-          
-          this.profileTweets.add(tweet);
-          this.bookmarkes.add(tweet.id);
-        })
-        this.count = data.totalCount;
-
-       
-      },
-      (error) => {
-        console.log('Error fetching user bookmarks', error);
-      }
-    );
+    
+   
+      this.bookmarksService.getBookmarks(this.userId).subscribe(
+        (data) => {
+         
+          data.tweets.forEach(tweet=>{
+           
+            this.bookmarkes.add(tweet.id);
+          })
+          this.count = data.totalCount;
+  
+         
+        },
+        (error) => {
+          console.log('Error fetching user bookmarks', error);
+        }
+      );
+    
+ 
   }
 
   getUserLikedTweets(): void {
     this.changeTapStatus(this.likes);
-    this.profileTweets.clear();
+    
+    
     this.timelineService.getUserLikedTweets(this.userId).subscribe(
       (data) => {
     
         data.tweets.forEach(tweet=>{
-          this.profileTweets.add(tweet);
+         
           this.likedTweets.add(tweet.id);
         })
       
@@ -142,7 +168,9 @@ export class ProfileComponent implements AfterViewInit {
       (error) => {
         console.log('Error fetching user liked tweets', error);
       }
-    );
+    );  
+    
+    
   }
 
   getFollowers(): void {
@@ -204,6 +232,7 @@ export class ProfileComponent implements AfterViewInit {
  closePopUp():void{
   this.showTweetPost=false;
 }
+
 
 
 }

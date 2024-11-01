@@ -43,19 +43,19 @@ namespace Service.ServiceModels
             await _repository.SaveAsync();
         }
 
-        public async Task<(IEnumerable<TweetDTO> bookmarks, MetaData metaData)> GetUserBookmarks(int userId, BookmarkParameters bookmarkParameters, bool trackChanges)
+        public async Task <IEnumerable<TweetDTO>> GetUserBookmarks (int userId,bool trackChanges)
         {
-            var bookmarksWithMetaData = await _repository.BookmarkRepository.GetBookmarksByUser(userId, bookmarkParameters, trackChanges);
+            var bookmarksWithMetaData = await _repository.BookmarkRepository.GetBookmarksByUser(userId, trackChanges);
 
              
              if (!bookmarksWithMetaData.Any())
             {
-                return (Enumerable.Empty<TweetDTO>(), new MetaData());
+                return Enumerable.Empty<TweetDTO>();
             }
 
             var bookmarksDTOs = _mapper.Map<IEnumerable<TweetDTO>>(bookmarksWithMetaData);
 
-            return (bookmarks: bookmarksDTOs, metaData: bookmarksWithMetaData.MetaData);
+            return  bookmarksDTOs;
         }
     }
 }

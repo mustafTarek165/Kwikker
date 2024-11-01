@@ -12,6 +12,6 @@ namespace Service.Contracts.Contracts
     {
         Task CreateBookmark(int userId,int tweetId, bool trackChanges);
         Task DeleteBookmark(int userId,int tweetId, bool trackChanges);
-        Task<(IEnumerable<TweetDTO> bookmarks, MetaData metaData)> GetUserBookmarks(int userId, BookmarkParameters bookmarkParameters, bool trackChanges);
+        Task <IEnumerable<TweetDTO>>  GetUserBookmarks(int userId,  bool trackChanges);
     }
 }
