@@ -18,12 +18,15 @@
                 <span>Profile</span>
             </a>
         </li>
+         
         <li>
-            <a   class="nav-link text-white" >
+            <a class="nav-link text-white position-relative" (click)="viewNotifications()">
               <i class="fas fa-bell fa-fw me-2"></i>
               <span>Notifications</span>
               <!-- Notification Counter -->
-             
+              <span *ngIf="notificationCount > 0" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                {{ notificationCount }}
+              </span>
             </a>
           </li>
           

@@ -136,7 +136,7 @@ if(this.activeButton==this.posts)
   getUserBookmarks(): void {
    
     this.changeTapStatus(this.bookmarks);
-//this.bookmarkes.clear();
+
     this.bookmarksService.getBookmarks(this.userId).subscribe(
         (data) => {
          
@@ -156,7 +156,7 @@ if(this.activeButton==this.posts)
   getUserLikedTweets(): void {
     
     this.changeTapStatus(this.likes);
-  //this.likedTweets.clear();
+
     this.timelineService.getUserLikedTweets(this.userId).subscribe(
       (data) => {
     
@@ -177,7 +177,7 @@ if(this.activeButton==this.posts)
   getUserRetweets(): void {
     
     this.changeTapStatus(this.retweets);
-//this.userRetweets.clear();
+
     this.timelineService.getUserRetweets(this.userId).subscribe(
       (data) => {
     

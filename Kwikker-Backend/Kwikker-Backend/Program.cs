@@ -27,12 +27,12 @@ namespace Kwikker_Backend
             builder.Services.AddScoped<ITrendService, TrendService>();
             builder.Services.ConfigureHangfire(builder.Configuration);
             builder.Services.AddHangfireServer(); // Hangfire service
-            builder.Services.ConfigureCors();
+            builder.Services.ConfigureCors(); // Ensure CORS policy is registered here
             builder.Services.ConfigureLoggerService();
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.ConfigureSqlContext(builder.Configuration);
-   
+
             builder.Services.AddScoped<IDataShaper<TweetDTO>, DataShaper<TweetDTO>>();
 
             builder.Services.AddControllers();
@@ -60,15 +60,21 @@ namespace Kwikker_Backend
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Use CORS Policy here, before routing and other middleware
             app.UseCors("CorsPolicy");
 
+            app.UseRouting();
             app.UseAuthorization();
+
+            // Map Controllers and SignalR Hub
             app.MapControllers();
             app.MapHub<NotificationHub>("/notificationHub");
+
             // Configure recurring jobs after building the app
             app.Services.ConfigureRecurringJobs();
 
-            app.MapHangfireDashboard();
+            // Only one Hangfire Dashboard configuration is necessary
+            // app.MapHangfireDashboard(); 
 
             // 5. Run the application
             app.Run();

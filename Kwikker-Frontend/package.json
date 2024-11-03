@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "@microsoft/signalr": "^8.0.7",
     "bootstrap": "^5.3.3",
     "ngx-infinite-scroll": "^18.0.0",
     "rxjs": "~7.8.0",

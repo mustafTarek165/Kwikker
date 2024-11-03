@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../Services/Notification.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -13,17 +14,22 @@ export class SideBarComponent {
 @Input()
 userId:number=0;
 
-constructor(private router:Router){}
+notificationCount!: number;
+constructor(private router:Router,private notificationService: NotificationService){}
 ngOnInit(): void {
 
+  this.notificationService.notificationCount$.subscribe(
+    (count) => {
+      this.notificationCount = count;
+    }
+  );
+}
+ // Reset notification count when viewing notifications
+ viewNotifications() {
+  this.notificationService.resetNotificationCount();
+  // Make a GET request to fetch all notifications if needed
 }
 
-viewNotifications(): void {
-this.router.navigate(['notifications']);
-  
-
- 
-}
 
 goToProfile(userId:number):void{
 
