@@ -1,4 +1,9 @@
-<div>
+<div class="profile-container"
+infiniteScroll
+[infiniteScrollDistance]="2"
+[infiniteScrollThrottle]="500"
+(scrolled)="onScroll()"
+[scrollWindow]="true">
     <div class="tabs">
         <button (click)="GetRandomTimeline()" #Foryou >For you</button>
         <button (click)="GetFollowersNews()" #Following>Following</button>

@@ -43,22 +43,22 @@ namespace Service
                 NotificationService(repositoryManager, logger, mapper));
 
             _retweetService = new Lazy<IRetweetService>(() => new
-          RetweetService(repositoryManager, logger,mapper,_notificationService.Value));
+          RetweetService(repositoryManager, logger,mapper,redisConnection, _notificationService.Value));
 
             _likeService = new Lazy<ILikeService>(() => new
-            LikeService(repositoryManager, logger,mapper,hubContext, _notificationService.Value));
+            LikeService(repositoryManager, logger,mapper,redisConnection, hubContext, _notificationService.Value));
 
             _followService = new Lazy<IFollowService>(() => new
           FollowService(repositoryManager, logger,mapper,redisConnection,_notificationService.Value,_userService.Value));
 
             _bookmarkService = new Lazy<IBookmarkService>(() => new
-          BookmarkService(repositoryManager, logger, mapper));
+          BookmarkService(repositoryManager, logger, mapper, redisConnection));
 
             _trendService = new Lazy<ITrendService>(() => new
           TrendService(repositoryManager, logger, mapper,redisConnection));
 
             _timelineService = new Lazy<ITimelineService>(() => new
-           TimelineService(repositoryManager, logger, mapper, redisConnection,_followService.Value,_tweetService.Value));
+           TimelineService(repositoryManager, logger, mapper,_followService.Value,_tweetService.Value));
 
      
 

@@ -49,13 +49,19 @@ namespace Kwikker_Backend.Controllers
         [HttpGet("LikedTweets/{UserId:int}")]
         public async Task<IActionResult> GetLikedTweetsByUser(int UserId)
         {
-           var pagedLikedTweets = await _service.LikeService.GetUserLikedTweets(UserId, trackChanges: false);
+           var likedTweets = await _service.LikeService.GetUserLikedTweets(UserId, trackChanges: false);
 
-            
-          
-
-            return Ok(pagedLikedTweets);
+           
+            return Ok(likedTweets);
         }
+        [HttpGet("retweets/{UserId:int}")]
+        public async Task<IActionResult> GetRetweetsByUser(int UserId)
+        {
+            var retweets = await _service.RetweetService.GetUserRetweets(UserId, trackChanges: false);
+
+            return Ok(retweets);
+        }
+
 
     }
 }

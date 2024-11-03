@@ -44,24 +44,11 @@ namespace Repository.RepositoryModels
             Delete(like);
         }
     
-
-
-        public async Task<int> GetTweetLikesNumber(int tweetId, bool trackChanges)
-        =>await RepositoryContext.Set<Like>().CountAsync();
-
-
-
-        public async Task<List<Tweet>> GetLikedTweetsByUser(int UserId, bool trackChanges)
+        public async Task<List<int>> GetLikedTweetsByUser(int UserId, bool trackChanges)
         {
             // Build the query with a join and filtering logic
-            var likes = FindByCondition(b => b.UserId == UserId, trackChanges)
-                .OrderBy(x=>x.LikedAt)
-                .Join(
-                    RepositoryContext.Set<Tweet>(), // Join with Tweets table
-                    b => b.TweetId,                 // Foreign key in Like
-                    t => t.ID,                      // Primary key in Tweet
-                    (b, t) => t                  // Select entire Tweet entity
-                ).ToList();
+            var likes = await FindByCondition(b => b.UserId == UserId, trackChanges)
+                .Select(x=>x.TweetId).ToListAsync();    
 
 
             return likes;

@@ -44,6 +44,7 @@ export class TweetService{
     removeRetweet(userId:number,tweetId:number):Observable<any>{
       return this.http.delete(`${this.Url}/retweet/${userId}/${tweetId}`);
     }
+    
 
 
 }

@@ -6,13 +6,11 @@ import { CreatedTweet, TweetForCreation } from '../../Models/Tweet.model';
 import { TweetService } from '../../Services/Tweet.service';
 import { TimelineService } from '../../Services/Timeline.service';
 import { TweetPostComponent } from "../tweet-post/tweet-post.component";
-import { debounceTime, Subject } from 'rxjs';
-import { RequestParameters } from '../../Models/RequestParameters.model';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 @Component({
   selector: 'app-home-timeline',
   standalone: true,
-  imports: [TweetComponent, FormsModule, CommonModule, TweetPostComponent],
+  imports: [TweetComponent, FormsModule, CommonModule, TweetPostComponent,InfiniteScrollModule],
   templateUrl: './home-timeline.component.html',
   styleUrl: './home-timeline.component.css'
 })
@@ -46,31 +44,42 @@ export class HomeTimelineComponent {
     this.activeButton=this.ForYou;
 
     this.GetRandomTimeline();
-    console.log(this.ForYou);
+    this.changeTapStatus(this.ForYou);
+    console.log(this.activeButton.nativeElement);
   }
 
  
  
  GetFollowersNews():void{
    
-    this.changeTapStatus(this.Following);
-    
+   if(this.activeButton==this.ForYou) {
+    this.tweets.clear();
+    this.changeTapStatus(this.Following); 
+  }
+    this.toggleLoading();
     this.timelinService.getFollowersNews(this.userId).subscribe((data:CreatedTweet[])=>{
     
        data.forEach(tweet=>{
-        if(!this.tweets.has(tweet))
+      
         this.tweets.add(tweet);
        })
           
     },  (error) => {
       console.error('Error fetching home timeline', error);  // Handle error
+    },()=>{
+      this.toggleLoading();
     })
       }
 
   GetRandomTimeline():void{
+    if(this.activeButton==this.Following) {
+      this.tweets.clear();
+      this.changeTapStatus(this.ForYou); 
+      console.log('unexpected result');
+    }
+ 
+   this.toggleLoading();
 
-   this.changeTapStatus(this.ForYou);
-  this.tweets.clear();
     this.timelinService.getRandomTimeline(this.userId).subscribe((data:CreatedTweet[])=>{
       
       data.forEach(tweet=>{
@@ -80,6 +89,8 @@ export class HomeTimelineComponent {
     
     },(error)=>{
       console.error('Error fetching random timeline',error);
+    },()=>{
+      this.toggleLoading();
     })
   }
 
@@ -180,7 +191,18 @@ export class HomeTimelineComponent {
    }
 
    
-  
+  //implement infinite scroll
+isLoading:boolean=false;
+toggleLoading = ()=>this.isLoading=!this.isLoading;
+
+
+onScroll= ()=>{
+
+  if(this.activeButton==this.ForYou)  this.GetRandomTimeline();
+  else if(this.activeButton==this.Following) this.GetFollowersNews();
+
+}
+
   
   }
 

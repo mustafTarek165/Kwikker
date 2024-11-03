@@ -55,13 +55,7 @@ namespace Kwikker_Backend.Controllers
 
         }
         // Likes Creation,Retreival and Removal
-        [HttpGet("{tweetId:int}/likes")]
-        public async Task< IActionResult> GetTweetLikedUsers(int tweetId)
-        {
-            int likes=await _service.LikeService.GetTweetLikesNumber(tweetId,trackChanges:false);
-            return Ok(likes);
-        }
-        
+     
 
         [HttpPost("like/{userId:int}/{tweetId:int}")]
         public async Task<IActionResult> AddLike(int userId,int tweetId)
@@ -79,12 +73,7 @@ namespace Kwikker_Backend.Controllers
         }
         // Retweets Creation, Retreival and Removal
 
-        [HttpGet("{tweetId:int}/retweets")]
-        public async Task<IActionResult> GetTweetRetweetsUsers(int tweetId)
-        {
-            int retweets = await _service.RetweetService.GetTweetRetweetsNumber(tweetId, trackChanges: false);
-            return Ok(retweets);
-        }
+       
         [HttpPost("retweet/{userId:int}/{tweetId:int}")]
         public async Task<IActionResult> AddRetweet(int userId, int tweetId)
         {
@@ -99,6 +88,7 @@ namespace Kwikker_Backend.Controllers
 
             return Ok();
         }
+
 
     }
 }

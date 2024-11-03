@@ -11,7 +11,7 @@ export interface CreatedUser{
     userName:string,
     email:String,
     profilePicture:string |null,
-    Bio: string | null
+    Bio: string | null,
+    createdAt:Date
    
-
 }

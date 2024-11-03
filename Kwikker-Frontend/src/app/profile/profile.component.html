@@ -28,7 +28,7 @@
       <h2>{{this.user?.userName}}</h2>
       <p>{{this.user?.email}}</p>
       <p class="fw-bold" style="color: aliceblue;">{{this.user?.Bio}}</p>
-      <p><i class="fa fa-calendar"></i> Joined At 2024/10/27</p>
+      <p><i class="fa fa-calendar"></i> Joined At {{this.user?.createdAt | date: 'yyyy/MM/dd'}}</p>
       <div style="display: flex;">
         <a (click)="goToFollowees(user.id)">
           <p><span style="color: white;">{{ followees?.length || 0 }}</span> followings</p>
@@ -45,6 +45,7 @@
     <button class="btn btn-primary fw-bold cus-button" (click)="getUserProfile()" #posts>Posts</button>
     <button class="btn btn-primary fw-bold cus-button" (click)="getUserLikedTweets()" #likes>Likes</button>
     <button class="btn btn-primary fw-bold cus-button" (click)="getUserBookmarks()" #bookmarks>Bookmarks</button>
+    <button class="btn btn-primary fw-bold cus-button" (click)="getUserRetweets()" #retweets>Retweets</button>
   </div>
 
   <div *ngIf="showTweetPost">
@@ -55,12 +56,16 @@
   <div *ngIf="profileTweets.size > 0; else noTweets">
     <div *ngFor="let tweet of profileTweets">
       <app-tweet 
-        *ngIf="(likedTweets.has(tweet.id) && this.activeButton.nativeElement==this.likes) || (bookmarkes.has(tweet.id) 
-        && this.activeButton.nativeElement==this.bookmarks) || (allTweets.has(tweet.id) && this.activeButton.nativeElement==this.posts)"
+        *ngIf="(likedTweets.has(tweet.id) && this.activeButton.nativeElement==this.likes) || 
+        (bookmarkes.has(tweet.id) && this.activeButton.nativeElement==this.bookmarks) || 
+        (allTweets.has(tweet.id) && this.activeButton.nativeElement==this.posts)||
+        (userRetweets.has(tweet.id) && this.activeButton.nativeElement==this.retweets)"
+
         [tweet]="tweet"
         [userId]="userId"
         [isLiked]="likedTweets.has(tweet.id)"
         [isBookmarked]="bookmarkes.has(tweet.id)"
+        [isRetweeted]="userRetweets.has(tweet.id)"
         (tweetDeleted)="handleDeletion($event)"
         (updateTweet)="receiveForUpdate($event)">
       </app-tweet>

@@ -47,21 +47,12 @@ namespace Repository.RepositoryModels
             Delete(retweet);
         }
 
-        public async Task<int> GetTweetRetweetsNumber(int tweetId, bool trackChanges)
-     => await FindByCondition(x => x.TweetId.Equals(tweetId), trackChanges).Include(x => x.User).CountAsync();
-
-        public async Task<PagedList<Tweet>> GetRetweetsByUser(int UserId, TweetParameters tweetParameters, bool trackChanges)
+     
+        public async Task<List<int>> GetRetweetsByUser(int UserId,  bool trackChanges)
         {
-            var Retweets = FindByCondition(x => x.UserId.Equals(UserId), trackChanges)
-                .Sort<Retweet>(tweetParameters.OrderBy!).Join(
-                    RepositoryContext.Set<Tweet>(), // Join with Tweets table
-                    b => b.TweetId,                 // Foreign key in Retweet
-                    t => t.ID,                      // Primary key in Tweet
-                    (b, t) => t                     // Select entire Tweet entity
-                );
-            return await PagedList<Tweet>
-                   .ToPagedListAsync(Retweets, tweetParameters.PageNumber,
-                   tweetParameters.PageSize);
+            var Retweets =await FindByCondition(x => x.UserId.Equals(UserId), trackChanges)
+                .Select(x=>x.TweetId).ToListAsync();    
+            return  Retweets;
         }
 
        

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shared.DTOs
 {
-    public record UserDTO(int ID,string UserName,string PasswordHash,string Email,string ProfilePicture,string Bio);
+    public record UserDTO(int ID,string UserName,string PasswordHash,string Email,string ProfilePicture,string Bio,DateTime createdAt);
 }

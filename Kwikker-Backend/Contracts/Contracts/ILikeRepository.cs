@@ -10,11 +10,11 @@ namespace Repository.Contracts.Contracts
 {
     public interface ILikeRepository
     {
-        Task<int> GetTweetLikesNumber(int tweetId,bool trackChanges);
+      
         void CreateLike(int userId, int tweetId);
         void DeleteLike(Like like);
         Task<Like> GetLike(int userId, int tweetId,bool trackChanges);
 
-        Task<List<Tweet>> GetLikedTweetsByUser(int UserId,  bool trackChanges);
+        Task<List<int>> GetLikedTweetsByUser(int UserId,  bool trackChanges);
     }
 }

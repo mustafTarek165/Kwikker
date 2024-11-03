@@ -30,30 +30,16 @@ export class TimelineService
     (`${this.TimelinesUrl}/random/${userId}`);
   }
 
-  getUserLikedTweets(userId: number): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
+  getUserLikedTweets(userId: number): Observable< number[]> {
 
     console.log('hello from timeline service');
-    return this.http.get<CreatedTweet[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`, {
-        observe: 'response'
-    }).pipe(
-        map((response: HttpResponse<CreatedTweet[]>) => {
-            // Extract metadata from X-Pagination header
-            const paginationHeader = response.headers.get('X-Pagination');
-            let totalCount = 0;
-            console.log('hello from timeline service');
-            if (paginationHeader) {
-                const metaData = JSON.parse(paginationHeader);
-                totalCount = metaData.TotalCount || 0;
-                console.log(metaData);
-                console.log(metaData.totalCount);
-            }
+    return this.http.get<number[]>(`${this.TimelinesUrl}/LikedTweets/${userId}`);
+}
 
-            return {
-                tweets: response.body || [],
-                totalCount
-            };
-        })
-    );
+getUserRetweets(userId: number): Observable< number[]> {
+
+    console.log('hello from timeline service');
+    return this.http.get<number[]>(`${this.TimelinesUrl}/retweets/${userId}`);
 }
 getProfile(userId: number, requestParameters: RequestParameters): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
   return this.http.get<CreatedTweet[]>

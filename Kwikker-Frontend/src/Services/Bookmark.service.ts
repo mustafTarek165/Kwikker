@@ -14,28 +14,9 @@ export class BookmarkService {
 
     constructor(private http: HttpClient) { }
 
-    getBookmarks(userId: number): Observable<{ tweets: CreatedTweet[], totalCount: number }> {
-        return this.http.get<CreatedTweet[]>(`${this.BookmarksUrl}/${userId}`, {
-            observe: 'response'
-        }).pipe(
-            map((response: HttpResponse<CreatedTweet[]>) => {
-                // Extract metadata from X-Pagination header
-                const paginationHeader = response.headers.get('X-Pagination');
-                let totalCount = 0;
+    getBookmarks(userId: number): Observable< number[]> {
+        return this.http.get<number[]>(`${this.BookmarksUrl}/${userId}`);
 
-
-                if (paginationHeader) {
-                    const metaData = JSON.parse(paginationHeader);
-                    console.log(metaData);
-                    totalCount = metaData.TotalCount || 0;
-                }
-
-                return {
-                    tweets: response.body || [],
-                    totalCount
-                };
-            })
-        );
     }
     createBookmark(userId:number,tweetId:number):Observable<any>{
         return this.http.post(`${this.BookmarksUrl}/${userId}/${tweetId}`,[]);

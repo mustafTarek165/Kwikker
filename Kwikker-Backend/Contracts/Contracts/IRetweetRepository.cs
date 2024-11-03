@@ -10,11 +10,11 @@ namespace Repository.Contracts.Contracts
 {
     public interface IRetweetRepository
     {
-        Task<int> GetTweetRetweetsNumber(int tweetId, bool trackChanges);
+      
         void CreateRetweet(int userId, int tweetId);
         void DeleteRetweet(Retweet retweet);
         Task<Retweet> GetRetweet(int userId, int tweetId, bool trackChanges);
 
-        Task<PagedList<Tweet>> GetRetweetsByUser(int UserId, TweetParameters tweetParameters, bool trackChanges);
+        Task<List<int>> GetRetweetsByUser(int UserId, bool trackChanges);
     }
 }

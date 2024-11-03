@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.ExceptionModels;
+using Microsoft.EntityFrameworkCore.Storage;
 using Service.Contracts.Contracts;
 using Service.DataShaping;
 using Shared.DTOs;
 using Shared.RequestFeatures;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Service.ServiceModels
@@ -20,13 +23,19 @@ namespace Service.ServiceModels
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly INotificationService _notification;
+
+        private readonly StackExchange.Redis.IDatabase _redisCache;
+
+        private string CacheKey = "Retweets";  // Cache key
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
         public RetweetService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, INotificationService notification)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection, INotificationService notification)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-            _notification = notification;   
+            _notification = notification;
+            _redisCache = redisConnection.GetDatabase();
         }
         public async Task CreateRetweet(int userId, int tweetid, bool trackChanges)
         {
@@ -52,14 +61,32 @@ namespace Service.ServiceModels
             _repository.RetweetRepository.DeleteRetweet(retweet);
             await _repository.SaveAsync();
         }
-       
-   
 
-        public async Task<int> GetTweetRetweetsNumber(int tweetId, bool trackChanges)
+        public async Task<IEnumerable<int>> GetUserRetweets(int userId, bool trackChanges)
         {
-            int retweets =await _repository.RetweetRepository.GetTweetRetweetsNumber(tweetId, trackChanges);
+            CacheKey += $"{userId}";
 
-            return retweets;
+            var cachedRetweets = await _redisCache.StringGetAsync(CacheKey);
+
+            if (!cachedRetweets.HasValue)
+            {
+                var Retweets = await _repository.RetweetRepository.GetRetweetsByUser(userId, trackChanges);
+                if (!Retweets.Any())
+                {
+                    return Enumerable.Empty<int>();
+                }
+
+                var RetweetDTOs = _mapper.Map<IEnumerable<int>>(Retweets);
+
+                var serializedRetweets = JsonSerializer.Serialize(RetweetDTOs);
+
+                await _redisCache.StringSetAsync(CacheKey, serializedRetweets, CacheExpiration);
+                return RetweetDTOs;
+            }
+
+            var retweets = JsonSerializer.Deserialize<List<int>>(cachedRetweets!);
+
+            return retweets!;
         }
     }
 }

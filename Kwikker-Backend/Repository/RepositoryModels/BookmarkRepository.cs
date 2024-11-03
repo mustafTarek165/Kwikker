@@ -46,18 +46,11 @@ namespace Repository.RepositoryModels
             return bookmark!;
         }
 
-        public async Task<List<Tweet>> GetBookmarksByUser(int UserId, bool trackChanges)
+        public async Task<List<int>> GetBookmarksByUser(int UserId, bool trackChanges)
         {
             // Build the query with a join and filtering logic
-            var bookmarks = FindByCondition(b => b.UserId == UserId, trackChanges)
-                .OrderBy(x=>x.BookmarkedAt)
-                .Join(
-                    RepositoryContext.Set<Tweet>(), // Join with Tweets table
-                    b => b.TweetId,                 // Foreign key in Bookmark
-                    t => t.ID,                      // Primary key in Tweet
-                    (b, t) => t                     // Select entire Tweet entity
-                ).ToList();
-
+            var bookmarks = await FindByCondition(b => b.UserId == UserId, trackChanges)
+                .Select(x=>x.TweetId).ToListAsync();
 
             return bookmarks;
         }

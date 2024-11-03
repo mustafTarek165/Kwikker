@@ -6,6 +6,10 @@ using Shared.DTOs;
 using Entities.ExceptionModels;
 using Microsoft.AspNetCore.SignalR;
 using Shared.RequestFeatures;
+using Microsoft.EntityFrameworkCore.Storage;
+using StackExchange.Redis;
+using System;
+using System.Text.Json;
 namespace Service.ServiceModels
 {
     internal sealed class LikeService : ILikeService
@@ -13,14 +17,19 @@ namespace Service.ServiceModels
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly StackExchange.Redis.IDatabase _redisCache;
         private readonly INotificationService _notification;
         private readonly IHubContext<NotificationHub> _hubContext;
+
+        private string CacheKey = "Likes";  // Cache key
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
         public LikeService(IRepositoryManager repository, ILoggerManager
-        logger, IMapper mapper, IHubContext<NotificationHub> hubContext, INotificationService notification)
+        logger, IMapper mapper, IConnectionMultiplexer redisConnection, IHubContext<NotificationHub> hubContext, INotificationService notification)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _redisCache = redisConnection.GetDatabase();
             _notification = notification;
             _hubContext = hubContext;   
         }
@@ -56,26 +65,33 @@ namespace Service.ServiceModels
             await _repository.SaveAsync();
         }
 
-        public async Task<int> GetTweetLikesNumber(int tweetId, bool trackChanges)
+
+        public async Task<IEnumerable<int>> GetUserLikedTweets(int userId, bool trackChanges)
         {
-            int likes=await _repository.LikeRepository.GetTweetLikesNumber(tweetId,trackChanges);
-            
-            return likes;
-        }
-
-        public async Task<IEnumerable<TweetDTO>> GetUserLikedTweets(int userId, bool trackChanges)
-        {
-            var likedTweetsWithMetaData = await _repository.LikeRepository.GetLikedTweetsByUser(userId,  trackChanges);
-
-
-            if (!likedTweetsWithMetaData.Any())
+            CacheKey += $"{userId}";
+            var cachedTweets = await _redisCache.StringGetAsync(CacheKey);
+            if(!cachedTweets.HasValue)
             {
-                return Enumerable.Empty<TweetDTO>();
+                var likedTweetsWithMetaData = await _repository.LikeRepository.GetLikedTweetsByUser(userId, trackChanges);
+
+
+                if (!likedTweetsWithMetaData.Any())
+                {
+                    return Enumerable.Empty<int>();
+                }
+
+                var likedTweetsDTOs = _mapper.Map<IEnumerable<int>>(likedTweetsWithMetaData);
+
+                var serializedLikedTweets = JsonSerializer.Serialize(likedTweetsDTOs);
+
+                await _redisCache.StringSetAsync(CacheKey, serializedLikedTweets, CacheExpiration);
+
+                return likedTweetsDTOs;
             }
 
-            var likedTweetsDTOs = _mapper.Map<IEnumerable<TweetDTO>>(likedTweetsWithMetaData);
-
-            return likedTweetsDTOs;
+            var likedTweets = JsonSerializer.Deserialize<List<int>>(cachedTweets!);
+            return likedTweets!;
+           
         }
 
     }

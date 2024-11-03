@@ -4,6 +4,8 @@ using AutoMapper;
 using Shared.DTOs;
 using Shared.RequestFeatures;
 using Entities.ExceptionModels;
+using StackExchange.Redis;
+using System.Text.Json;
 namespace Service.ServiceModels
 {
     public class BookmarkService:IBookmarkService
@@ -11,12 +13,17 @@ namespace Service.ServiceModels
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IDatabase _redisCache;
+
+        private string CacheKey = "Bookmarks";  // Cache key
+        private readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);  // Cache expiration time
         public BookmarkService(IRepositoryManager repository, ILoggerManager
-        logger,IMapper mapper)
+        logger,IMapper mapper,IConnectionMultiplexer redisConnection)
         {
             _repository = repository;
             _logger = logger;
-            _mapper = mapper;   
+            _mapper = mapper; 
+            _redisCache=redisConnection.GetDatabase();
         }
 
         public async Task CreateBookmark(int userId, int tweetId, bool trackChanges)
@@ -43,19 +50,31 @@ namespace Service.ServiceModels
             await _repository.SaveAsync();
         }
 
-        public async Task <IEnumerable<TweetDTO>> GetUserBookmarks (int userId,bool trackChanges)
+        public async Task <IEnumerable<int>> GetUserBookmarks (int userId,bool trackChanges)
         {
-            var bookmarksWithMetaData = await _repository.BookmarkRepository.GetBookmarksByUser(userId, trackChanges);
+            CacheKey +=$"{userId}";
 
-             
-             if (!bookmarksWithMetaData.Any())
+            var cachedBookmarks = await _redisCache.StringGetAsync(CacheKey);
+
+            if(!cachedBookmarks.HasValue)
             {
-                return Enumerable.Empty<TweetDTO>();
+                var bookmarks = await _repository.BookmarkRepository.GetBookmarksByUser(userId, trackChanges);
+                if (!bookmarks.Any())
+                {
+                    return Enumerable.Empty<int>();
+                }
+
+               
+
+                var serializedBookmarks = JsonSerializer.Serialize(bookmarks);
+
+                await _redisCache.StringSetAsync(CacheKey, serializedBookmarks, CacheExpiration);
+                return bookmarks;
             }
 
-            var bookmarksDTOs = _mapper.Map<IEnumerable<TweetDTO>>(bookmarksWithMetaData);
+            var likedTweets = JsonSerializer.Deserialize<List<int>>(cachedBookmarks!);
 
-            return  bookmarksDTOs;
+            return likedTweets!;
         }
     }
 }

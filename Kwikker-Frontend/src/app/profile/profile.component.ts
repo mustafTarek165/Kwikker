@@ -38,11 +38,12 @@ export class ProfileComponent implements AfterViewInit {
   allTweets=new Set<number>();
   bookmarkes=new Set<number>();
   likedTweets=new Set<number>();
-  
+  userRetweets=new Set<number>();
 
   @ViewChild('posts') posts!: ElementRef<HTMLButtonElement>;
   @ViewChild('likes') likes!: ElementRef<HTMLButtonElement>;
   @ViewChild('bookmarks') bookmarks!: ElementRef<HTMLButtonElement>;
+@ViewChild('retweets') retweets!:ElementRef<HTMLButtonElement>;
 
   activeButton!: ElementRef<HTMLButtonElement>;
 
@@ -77,9 +78,10 @@ export class ProfileComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.activeButton = this.posts;
-    this.getUserBookmarks();
-    this.getUserLikedTweets();
-    //this.getUserProfile();
+     this.getUserBookmarks();
+     this.getUserLikedTweets();
+     this.getUserRetweets();
+   
     this.getUserProfile();
     
      // Set initial active button to 'posts'
@@ -93,7 +95,10 @@ toggleLoading = ()=>this.isLoading=!this.isLoading;
 
 
 onScroll= ()=>{
- this.getUserProfile();
+
+if(this.activeButton==this.posts)
+  this.getUserProfile();
+
 }
 
   getUser(): void {
@@ -129,47 +134,65 @@ onScroll= ()=>{
   }
 
   getUserBookmarks(): void {
-    this.changeTapStatus(this.bookmarks);
-    
    
-      this.bookmarksService.getBookmarks(this.userId).subscribe(
+    this.changeTapStatus(this.bookmarks);
+//this.bookmarkes.clear();
+    this.bookmarksService.getBookmarks(this.userId).subscribe(
         (data) => {
          
-          data.tweets.forEach(tweet=>{
+          data.forEach(tweet=>{
            
-            this.bookmarkes.add(tweet.id);
+            this.bookmarkes.add(tweet);
           })
-          this.count = data.totalCount;
-  
-         
+          this.count = this.bookmarkes.size;
         },
         (error) => {
           console.log('Error fetching user bookmarks', error);
         }
       );
     
- 
   }
 
   getUserLikedTweets(): void {
+    
     this.changeTapStatus(this.likes);
-    
-    
+  //this.likedTweets.clear();
     this.timelineService.getUserLikedTweets(this.userId).subscribe(
       (data) => {
     
-        data.tweets.forEach(tweet=>{
+        data.forEach(tweet=>{
          
-          this.likedTweets.add(tweet.id);
+          this.likedTweets.add(tweet);
         })
       
-        this.count = data.totalCount;
+        this.count = this.likedTweets.size;
       },
       (error) => {
         console.log('Error fetching user liked tweets', error);
       }
     );  
     
+  }
+
+  getUserRetweets(): void {
+    
+    this.changeTapStatus(this.retweets);
+//this.userRetweets.clear();
+    this.timelineService.getUserRetweets(this.userId).subscribe(
+      (data) => {
+    
+        data.forEach(tweet=>{
+         
+          this.userRetweets.add(tweet);
+        })
+      
+        this.count = this.userRetweets.size;
+        console.log(this.userRetweets);
+      },
+      (error) => {
+        console.log('Error fetching user liked tweets', error);
+      }
+    );  
     
   }
 

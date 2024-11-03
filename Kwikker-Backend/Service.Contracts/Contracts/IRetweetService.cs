@@ -1,4 +1,5 @@
-﻿using Shared.RequestFeatures;
+﻿using Shared.DTOs;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,9 +12,12 @@ namespace Service.Contracts.Contracts
     public interface IRetweetService
     {
         
-        Task<int> GetTweetRetweetsNumber(int tweetId, bool trackChanges);
+     
         Task CreateRetweet(int userId, int tweetid, bool trackChanges);
 
         Task DeleteRetweet(int userId, int tweetid, bool trackChanges);
+
+        Task<IEnumerable<int>> GetUserRetweets(int userId, bool trackChanges);
+
     }
 }
