@@ -2,6 +2,11 @@
 
 Kwikker is a dynamic social media application designed to facilitate seamless interaction among users through features such as tweeting, liking, and real-time notifications.
 
+<video width="600" controls>
+  <source src="path-to-your-video/video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ##  Tech Stack
 
 - **Languages**: C#, TypeScript.
